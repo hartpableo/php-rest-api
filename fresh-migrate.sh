@@ -16,7 +16,7 @@ ddev mysql  -e "DROP DATABASE IF EXISTS db; CREATE DATABASE db;"
 echo ""
 
 echo "⚙ Running migration"
-ddev php migrations/000.init.php
+ddev php migration/000.init.php
 
 echo ""
 
