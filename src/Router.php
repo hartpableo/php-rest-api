@@ -34,11 +34,10 @@ class Router {
     $action = $this->routes[$method][$route] ?? NULL;
     if (empty($action)) {
       // TODO: Update 404 handling if still necessary
-      http_response_code(404);
       return new JsonResponse([
         'ok' => FALSE,
         'message' => 'Request not found'
-      ]);
+      ], 404);
     }
 
     [$class, $method] = $action;
@@ -47,11 +46,10 @@ class Router {
 
     if (!method_exists($class, $method)) {
       // TODO: Update 404 handling if still necessary
-      http_response_code(404);
       return new JsonResponse([
         'ok' => FALSE,
         'message' => 'Request not found'
-      ]);
+      ], 404);
     }
 
     return call_user_func_array([new $class, $method], []);

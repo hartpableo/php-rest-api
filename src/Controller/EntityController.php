@@ -6,8 +6,10 @@ use App\Attributes\Route;
 use App\Helper\JsonResponse;
 
 class EntityController {
-  #[Route('/', 'GET')]
+  #[Route('/api/entities/create', 'POST')]
   public function create(): JsonResponse {
+
+
     return new JsonResponse([
       'ok' => TRUE,
       'message' => 'Entity created'
