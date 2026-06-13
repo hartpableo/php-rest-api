@@ -18,11 +18,6 @@ class Request {
   }
 
   private function getHeaders(): array {
-    if (function_exists('getallheaders')) {
-      return getallheaders();
-    }
-
-    // Fallback if not running as an Apache/FastCGI module
     $headers = [];
     foreach ($_SERVER as $key => $value) {
       if (str_starts_with($key, 'HTTP_')) {
