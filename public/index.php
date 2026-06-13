@@ -1,7 +1,7 @@
 <?php
 
+use App\Core\Router;
 use App\Helper\JsonResponse;
-use App\Router;
 
 require_once __DIR__ . '/../bootstrap.php';
 
