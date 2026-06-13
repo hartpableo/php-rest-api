@@ -12,7 +12,7 @@ final class Database {
       $dbType = getenv('DB_TYPE');
       $dbHost = getenv('DB_HOST');
       $dbUser = getenv('DB_USER');
-      $dbPassword = getenv('DB_PASSWORD');
+      $dbPassword = getenv('DB_PASS');
       $dbName = getenv('DB_NAME');
       $dbPort = getenv('DB_PORT');
       self::$instance = new PDO(

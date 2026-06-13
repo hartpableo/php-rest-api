@@ -17,8 +17,8 @@ web_environment:
   - DB_PASS=db
   - DB_TYPE=mysql
   - DB_VERSION=8.4
-  - DB_POST=32772
-  - DB_HOST=127.0.0.1
+  - DB_PORT=3306
+  - DB_HOST=db
 corepack_enable: false
 nodejs_version: "20"
 
