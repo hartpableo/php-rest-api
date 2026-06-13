@@ -2,7 +2,7 @@
 
 namespace App\Core;
 
-class Request {
+final class Request {
   public string $method;
   public string $uri;
   public array $query;

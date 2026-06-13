@@ -8,7 +8,7 @@ use App\Exception\NotFoundException;
 use App\Exception\UnauthorizedException;
 use ReflectionException as ReflectionExceptionAlias;
 
-class Router {
+final class Router {
   private array $routes = [];
 
   public function __construct(
