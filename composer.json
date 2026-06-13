@@ -1,0 +1,11 @@
+{
+    "name": "hartpableo/php-rest-api",
+    "description": "A multi-tenant minimal REST API built on Vanilla PHP. This project is not intended for production use.",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "require": {}
+}
