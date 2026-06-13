@@ -112,7 +112,7 @@ class Router {
     ];
 
     // Validate origin
-    return !in_array($this->request->headers['Origin'], $allowedOrigins);
+    return in_array(($this->request->headers['Origin'] ?? NULL), $allowedOrigins);
   }
 
 }
