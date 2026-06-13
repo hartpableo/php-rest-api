@@ -107,6 +107,7 @@ final class Router {
     }
 
     // TODO: Store the allowed origins somewhere more dynamic/flexible soon
+    // TODO: Validate origin against API key (through the Bearer Token in $request)
     $allowedOrigins = [
       'http://hart.test'
     ];

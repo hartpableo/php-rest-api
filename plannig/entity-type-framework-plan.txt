@@ -2,10 +2,12 @@ The goal is to allow for the creation of entities with their own datasets or sch
 
 Configuration
 - entity_type - node, settings, etc. (I think this can just be a hardcoded config, not stored in the db)
-- bundle - label, id, entity_type (enum?)
+- bundle - label, id, entity_type
 - field_definition - text, number, longtext, entity_reference, etc. (maybe this can just be hardcoded as enum?)
 - field_instance - connect field_definition to bundle
 
 Tables
-- entity_base - every entity gets one row here containing universal metadata. Columns: id, bundle_id, tenant_id, created_at
+- tenant - id, name, email, password, created_at
+- api_key - id, tenant_id (many-to-one)
+- entity_base - every entity gets one row here containing universal metadata. Columns: id, name, type, tenant_id, created_at
 - field_data_[field_name] - entity_id, tenant_id, field_price_value
