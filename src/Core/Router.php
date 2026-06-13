@@ -3,7 +3,7 @@
 namespace App\Core;
 
 use App\Attributes\Route;
-use App\Helper\JsonResponse;
+use App\Utility\JsonResponse;
 
 class Router {
   private array $routes = [];
