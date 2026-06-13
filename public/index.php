@@ -1,5 +1,8 @@
 <?php
 
+use App\Helper\JsonResponse;
+use App\Router;
+
 require_once __DIR__ . '/../bootstrap.php';
 
 // TODO: Store the allowed origins somewhere more dynamic soon
@@ -13,16 +16,15 @@ $origin = $_SERVER['HTTP_ORIGIN'] ?? NULL;
 
 // Validate origin
 if (!in_array($origin, $allowedOrigins)) {
-  http_response_code(403);
-  echo json_encode([
+  return new JsonResponse([
     'ok' => FALSE,
-    'message' => 'CORS origin not allowed'
-  ]);
+    'message' => 'Forbidden'
+  ], 403);
 }
 
 // Handle preflight request
 if ($requestMethod === 'OPTIONS') {
-  http_response_code(204); // No Content is best practice for OPTIONS
+  http_response_code(204);
   header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE, PATCH');
   header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization');
   header('Access-Control-Max-Age: 7200');
@@ -30,4 +32,14 @@ if ($requestMethod === 'OPTIONS') {
 }
 
 // Router
+$router = new Router();
+try {
+  $router->register();
+} catch (ReflectionException $e) {
+  return new JsonResponse([
+    'ok' => FALSE,
+    'message' => 'API Error: ' . $e->getMessage()
+  ], 404);
+}
 
+$router->resolve($_SERVER['REQUEST_URI'], $_SERVER['REQUEST_METHOD']);

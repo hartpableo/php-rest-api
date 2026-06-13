@@ -4,14 +4,10 @@ namespace App;
 
 use App\Attributes\Route;
 use App\Helper\JsonResponse;
-use ReflectionException;
 
 class Router {
   private array $routes = [];
 
-  /**
-   * @throws ReflectionException
-   */
   public function register(): void {
     $controllers = array_map(
       fn($cont) => basename($cont, '.php'),
