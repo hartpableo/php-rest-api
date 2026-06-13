@@ -1,8 +1,10 @@
 <?php
 
+require_once __DIR__ . '/../bootstrap.php';
+
 // TODO: Store the allowed origins somewhere more dynamic soon
 $allowedOrigins = [
-  'http://localhost:3000'
+  'http://hart.test'
 ];
 
 $requestMethod = $_SERVER['REQUEST_METHOD'];

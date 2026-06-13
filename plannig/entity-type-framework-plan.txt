@@ -1,0 +1,11 @@
+The goal is to allow for the creation of entities with their own datasets or schema, similar to how Drupal allows users to create new entities and assign each of them their own fields.
+
+Configuration
+- entity_type - node, settings, etc. (I think this can just be a hardcoded config, not stored in the db)
+- bundle - label, id, entity_type (enum?)
+- field_definition - text, number, longtext, entity_reference, etc. (maybe this can just be hardcoded as enum?)
+- field_instance - connect field_definition to bundle
+
+Tables
+- entity_base - every entity gets one row here containing universal metadata. Columns: id, bundle_id, tenant_id, created_at
+- field_data_[field_name] - entity_id, tenant_id, field_price_value

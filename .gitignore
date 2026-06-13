@@ -4,3 +4,5 @@ vendor
 .ddev/*
 !.ddev/config.yaml
 env.local.php
+logs/*
+!logs/.gitkeep
