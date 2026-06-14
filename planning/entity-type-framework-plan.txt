@@ -10,4 +10,4 @@ Tables
 - user - id, name, email, password, role, created_at
 - api_key - id, tenant_id (many-to-one)
 - entity_base - every entity gets one row here containing universal metadata. Columns: id, label, type, tenant_id, created_at
-- field_data_[field_name] - entity_id, tenant_id, field_price_value
+- field_data_[field_name] - entity_id, tenant_id, field_value
