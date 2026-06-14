@@ -1,6 +1,6 @@
 # PHP REST API
 
-A multi-tenant minimal REST API built on Vanilla PHP. This project is not intended for production use.
+A multi-tenant minimal headless CMS REST API built on Vanilla PHP. This project is not intended for production use.
 
 ## Features
 

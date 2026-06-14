@@ -26,7 +26,10 @@ final readonly class CreateContentTypeAction {
         (int)$request->input('userId'),
       );
     } catch (BusinessRuleException|\DateMalformedStringException $e) {
-      return new JsonResponse($e->getErrors(), 400);
+      return new JsonResponse([
+        'ok' => FALSE,
+        'errors' => $e->getMessage(),
+      ], 400);
     }
 
     ($this->responder)($newEntity);

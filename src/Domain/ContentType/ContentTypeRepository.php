@@ -2,15 +2,10 @@
 
 namespace App\Domain\ContentType;
 
-use App\Core\Database;
+use App\Domain\RepositoryBase;
 
-class ContentTypeRepository {
-  private $db;
-  private $table = 'content_type';
-
-  public function __construct() {
-    $this->db = Database::getConnection();
-  }
+final class ContentTypeRepository extends RepositoryBase {
+  protected string $table = 'content_type';
 
   public function checkIfExists(
     int    $userId,
@@ -47,7 +42,7 @@ class ContentTypeRepository {
       ]);
     } catch (\PDOException $e) {
       if ($e->getCode() === '23000') {
-        throw new \InvalidArgumentException("The label or slug is already taken by this user.");
+        throw new \InvalidArgumentException($e->getMessage());
       }
       throw $e;
     }

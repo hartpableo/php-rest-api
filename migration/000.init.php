@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `name` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-  `type` VARCHAR(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
+  `role` VARCHAR(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `verified` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `email` (`email`)
@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS `content_type` (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT NOT NULL,
   `label` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `label_singular` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `label_plural` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `slug` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `idx_user_label` (`user_id`, `label`),

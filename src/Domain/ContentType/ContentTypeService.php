@@ -24,11 +24,11 @@ final readonly class ContentTypeService {
     $errors = [];
 
     if (empty($label)) {
-      $errors['label'] = 'Label cannot be empty';
+      $errors['label'][] = 'Label cannot be empty';
     }
 
     if (empty($userId)) {
-      $errors['userId'] = 'User cannot be empty';
+      $errors['userId'][] = 'User cannot be empty';
     }
 
     // TODO: Validate that the user exists
@@ -36,7 +36,7 @@ final readonly class ContentTypeService {
     $slug = Slugify::slugify($label);
 
     if ($this->repository->checkIfExists($userId, $label, $slug)) {
-      $errors['uniqueness'] = 'Content type already exists';
+      $errors['general'][] = 'Content type already exists';
     }
 
     if (!empty($errors)) {
