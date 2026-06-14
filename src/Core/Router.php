@@ -87,7 +87,6 @@ final class Router {
    * @throws UnauthorizedException
    * @throws InternalServerErrorException
    * @throws NotFoundException
-   * @throws ExceptionAlias
    */
   public function resolve(
     string $path,
@@ -98,7 +97,7 @@ final class Router {
       throw new UnauthorizedException("Not authorized");
     }
 
-    error_log(print_r($this->routes, true), 3, APP_ROOT . '/logs/router.log');
+//    error_log(print_r($this->routes, true), 3, APP_ROOT . '/logs/router.log');
 
     $routePath = parse_url($path, PHP_URL_PATH);
     $action = $this->routes[$method][$routePath] ?? NULL;

@@ -8,7 +8,6 @@ use App\Core\Router;
 use App\Exception\InternalServerErrorException;
 use App\Exception\NotFoundException;
 use App\Exception\UnauthorizedException;
-use App\Utility\JsonResponse;
 
 // Constants
 define('APP_ROOT', realpath(__DIR__));
@@ -34,6 +33,4 @@ try {
   $router->resolve($request->uri, $request->method);
 } catch (UnauthorizedException|NotFoundException|InternalServerErrorException $e) {
   $e->displayError();
-} catch (Exception $e) {
-  die($e->getMessage());
 }
