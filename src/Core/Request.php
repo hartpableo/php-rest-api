@@ -21,11 +21,7 @@ final class Request {
     $headers = [];
     foreach ($_SERVER as $key => $value) {
       if (str_starts_with($key, 'HTTP_')) {
-        $name = substr($key, 5)
-            |> (fn($x) => str_replace('_', ' ', $x))
-            |> strtolower(...)
-            |> ucwords(...)
-            |> (fn($x) => str_replace(' ', '-', $x));
+        $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
         $headers[$name] = $value;
       }
     }

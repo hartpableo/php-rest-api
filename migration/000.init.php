@@ -39,13 +39,14 @@ CREATE TABLE IF NOT EXISTS `api_key` (
 );
 
 -- Create entity_base table
-CREATE TABLE IF NOT EXISTS `entity_base` (
+CREATE TABLE IF NOT EXISTS `content_type` (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT NOT NULL,
   `label` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-  `type` VARCHAR(15) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `idx_user_label` (`user_id`, `label`)
+  UNIQUE KEY `idx_user_label` (`user_id`, `label`),
+  UNIQUE KEY `idx_user_slug` (`user_id`, `slug`)
 );
 SQL;
 

@@ -13,25 +13,22 @@ use App\Utility\JsonResponse;
 // Constants
 define('APP_ROOT', realpath(__DIR__));
 
-// Container
-$container = new Container();
-$container->set(Request::class, new Request());
-
 // Request
 $request = new Request();
 $requestMethod = $request->method;
 $requestUri = $request->uri;
 $origin = $request->headers['Origin'] ?? NULL;
 
+// Container
+$container = new Container();
+$container->set(Request::class, $request);
+
 // Router
 $router = new Router($container, $request);
 try {
   $router->register();
 } catch (ReflectionException $e) {
-  return new JsonResponse([
-    'ok' => FALSE,
-    'message' => 'API Error: ' . $e->getMessage()
-  ], 404);
+  die($e->getMessage());
 }
 
 // Resolve route
@@ -42,4 +39,6 @@ try {
   );
 } catch (UnauthorizedException|NotFoundException|InternalServerErrorException $e) {
   $e->displayError();
+} catch (Exception $e) {
+  die($e->getMessage());
 }

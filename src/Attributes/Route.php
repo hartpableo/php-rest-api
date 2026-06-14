@@ -4,11 +4,12 @@ namespace App\Attributes;
 
 use Attribute;
 
-#[\Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
+#[\Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class Route {
   public function __construct(
-    public string       $path,
-    public array|string $method = 'GET',
+    public string $path,
+    // TODO: Support array of multiple request methods
+    public string $method = 'GET',
   ) {
   }
 }

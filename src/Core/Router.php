@@ -6,6 +6,7 @@ use App\Attributes\Route;
 use App\Exception\InternalServerErrorException;
 use App\Exception\NotFoundException;
 use App\Exception\UnauthorizedException;
+use Exception as ExceptionAlias;
 use ReflectionException as ReflectionExceptionAlias;
 
 final class Router {
@@ -21,36 +22,64 @@ final class Router {
    * @throws ReflectionExceptionAlias
    */
   public function register(): void {
-    $controllerFiles = glob(APP_ROOT . '/src/Controller/*.php');
-    $controllers = array_map(
+    // TODO: Create an array of the action classes instead of using glob() for better performance
+    $classFiles = glob(APP_ROOT . '/src/Action/*.php');
+    $classes = array_map(
       fn($cont) => basename($cont, '.php'),
-      $controllerFiles
+      $classFiles
     );
 
-    foreach ($controllers as $controller) {
-      $className = "App\\Controller\\{$controller}";
+    foreach ($classes as $controller) {
+      $className = "App\\Action\\{$controller}";
       $reflectionController = new \ReflectionClass($className);
-      foreach ($reflectionController->getMethods() as $method) {
-        $attributes = $method->getAttributes(Route::class);
-        foreach ($attributes as $attribute) {
-          $route = $attribute->newInstance();
 
+      // Process Class-level routes (mapping to __invoke)
+      $classAttributes = $reflectionController->getAttributes(Route::class);
+      foreach ($classAttributes as $attribute) {
+        $route = $attribute->newInstance();
+        $methodName = '__invoke';
+
+        if ($reflectionController->hasMethod($methodName)) {
+          $method = $reflectionController->getMethod($methodName);
           $dependenciesNeeded = [];
           foreach ($method->getParameters() as $param) {
             $type = $param->getType();
             if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
-              // Store the exact class name required (e.g. "App\Core\Request")
               $dependenciesNeeded[] = $type->getName();
             }
           }
-
           $this->routes[$route->method][$route->path] = [
             $className,
-            $method->getName(),
-            $dependenciesNeeded // Array of class strings stored in memory
+            $methodName,
+            $dependenciesNeeded
           ];
         }
       }
+
+      // Process Method-level routes
+//      foreach ($reflectionController->getMethods() as $method) {
+//        if ($method->getName() === '__invoke' && !empty($classAttributes)) {
+//          continue;
+//        }
+//        $attributes = $method->getAttributes(Route::class);
+//        foreach ($attributes as $attribute) {
+//          $route = $attribute->newInstance();
+//
+//          $dependenciesNeeded = [];
+//          foreach ($method->getParameters() as $param) {
+//            $type = $param->getType();
+//            if ($type instanceof \ReflectionNamedType && !$type->isBuiltin()) {
+//              $dependenciesNeeded[] = $type->getName();
+//            }
+//          }
+//
+//          $this->routes[$route->method][$route->path] = [
+//            $className,
+//            $method->getName(),
+//            $dependenciesNeeded
+//          ];
+//        }
+//      }
     }
   }
 
@@ -58,6 +87,7 @@ final class Router {
    * @throws UnauthorizedException
    * @throws InternalServerErrorException
    * @throws NotFoundException
+   * @throws ExceptionAlias
    */
   public function resolve(
     string $path,
@@ -67,6 +97,8 @@ final class Router {
     if (str_starts_with($path, '/api/') && !$this->guardApis($method)) {
       throw new UnauthorizedException("Not authorized");
     }
+
+    error_log(print_r($this->routes, true), 3, APP_ROOT . '/logs/router.log');
 
     $routePath = parse_url($path, PHP_URL_PATH);
     $action = $this->routes[$method][$routePath] ?? NULL;
@@ -89,7 +121,12 @@ final class Router {
       $argsToPass[] = $resolvedInstance;
     }
 
-    $controllerInstance = new $class();
+    // Resolve controller instance from the container (enabling constructor autowiring)
+    $controllerInstance = $this->container->get($class);
+
+    if ($controllerInstance === NULL) {
+      throw new InternalServerErrorException("Cannot resolve controller: {$class}");
+    }
 
     // Pass dependencies natively
     return $controllerInstance->$method(...$argsToPass);
