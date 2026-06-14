@@ -9,7 +9,7 @@ use App\Exception\BusinessRuleException;
 use App\Responder\CreateContentTypeResponder;
 use App\Utility\JsonResponse;
 
-#[Route(path: '/api/entities/create', method: 'POST')]
+#[Route(path: '/api/content-types/create', method: 'POST')]
 final readonly class CreateContentTypeAction {
   public function __construct(
     private ContentTypeService         $service,

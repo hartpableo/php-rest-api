@@ -43,7 +43,7 @@ class ContentTypeRepository {
         ':user_id' => $entity->userId,
         ':label' => $entity->label,
         ':slug' => $entity->slug,
-        ':created_at' => $entity->createdAt,
+        ':created_at' => $entity->createdAt->format('Y-m-d H:i:s'),
       ]);
     } catch (\PDOException $e) {
       if ($e->getCode() === '23000') {

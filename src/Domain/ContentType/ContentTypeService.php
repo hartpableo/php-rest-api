@@ -7,7 +7,7 @@ use App\Utility\Slugify;
 use DateMalformedStringException as DateMalformedStringExceptionAlias;
 use DateTimeZone;
 
-class ContentTypeService {
+final readonly class ContentTypeService {
   public function __construct(
     private ContentTypeRepository $repository,
   ) {
@@ -31,9 +31,11 @@ class ContentTypeService {
       $errors['userId'] = 'User cannot be empty';
     }
 
+    // TODO: Validate that the user exists
+
     $slug = Slugify::slugify($label);
 
-    if ($this->repository->checkIfExists($label, $userId, $slug)) {
+    if ($this->repository->checkIfExists($userId, $label, $slug)) {
       $errors['uniqueness'] = 'Content type already exists';
     }
 
@@ -47,7 +49,7 @@ class ContentTypeService {
         userId: $userId,
         label: $label,
         slug: $slug,
-        createdAt: new \DateTime('now', new DateTimeZone('UTC')),
+        createdAt: new \DateTimeImmutable('now', new DateTimeZone('UTC')),
       )
     );
   }
