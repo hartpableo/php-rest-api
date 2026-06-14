@@ -15,8 +15,6 @@ define('APP_ROOT', realpath(__DIR__));
 
 // Request
 $request = new Request();
-$requestMethod = $request->method;
-$requestUri = $request->uri;
 $origin = $request->headers['Origin'] ?? NULL;
 
 // Container
@@ -33,10 +31,7 @@ try {
 
 // Resolve route
 try {
-  $router->resolve(
-    $_SERVER['REQUEST_URI'],
-    $_SERVER['REQUEST_METHOD'],
-  );
+  $router->resolve($request->uri, $request->method);
 } catch (UnauthorizedException|NotFoundException|InternalServerErrorException $e) {
   $e->displayError();
 } catch (Exception $e) {
