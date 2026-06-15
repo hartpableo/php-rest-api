@@ -1,5 +1,6 @@
 - ✅ user rego
-- field types (text, longtext, number, entity_reference) - enum
-- field instance - db.field_instance - user_id, field_type (enum), content_type_id, label (JOIN)
-- field_data_[field_name] - auto create table in db - field_instance_id, user_id, value (JOIN)
-- field creation
+- ✅ field types (text, longtext, number, entity_reference) - enum
+- ✅ field instance - db.field_instance - user_id, field_type (enum), content_type_id, label (JOIN)
+- ✅ field_data_[field_name] - auto create table in db - field_instance_id, user_id, value (JOIN)
+- ✅ field creation
+- test field creation flow

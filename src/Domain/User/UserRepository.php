@@ -14,7 +14,7 @@ final class UserRepository extends RepositoryBase {
     $stmt = $this->db->prepare("
       SELECT 1 FROM {$this->table} 
         WHERE email = :email 
-        LIMIT 1
+      LIMIT 1
     ");
     $stmt->execute([
       ':email' => $email,

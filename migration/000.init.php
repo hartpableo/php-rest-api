@@ -50,6 +50,19 @@ CREATE TABLE IF NOT EXISTS `content_type` (
   UNIQUE KEY `idx_user_label` (`user_id`, `label`),
   UNIQUE KEY `idx_user_slug` (`user_id`, `slug`)
 );
+
+-- Create field_instance table
+CREATE TABLE IF NOT EXISTS `field` (
+  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT NOT NULL,
+  `type` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
+  `content_type_id` INT NOT NULL,
+  `label` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `slug` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  UNIQUE KEY `idx_type_content` (`type`, `content_type_id`),
+  UNIQUE KEY `idx_user_slug` (`user_id`, `slug`),
+  INDEX `idx_user_label_content` (`user_id`, `label`, `content_type_id`)
+);
 SQL;
 
 $db = Database::getConnection();
