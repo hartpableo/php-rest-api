@@ -22,16 +22,10 @@ final class Router {
    * @throws ReflectionExceptionAlias
    */
   public function register(): void {
-    // TODO: Create an array of the action classes instead of using glob() for better performance
-    $classFiles = glob(APP_ROOT . '/src/Action/*.php');
-    $classes = array_map(
-      fn($cont) => basename($cont, '.php'),
-      $classFiles
-    );
+    $classes = require_once APP_ROOT . '/config/actions.php';
 
     foreach ($classes as $controller) {
-      $className = "App\\Action\\{$controller}";
-      $reflectionController = new \ReflectionClass($className);
+      $reflectionController = new \ReflectionClass($controller);
 
       // Process Class-level routes (mapping to __invoke)
       $classAttributes = $reflectionController->getAttributes(Route::class);
@@ -49,7 +43,7 @@ final class Router {
             }
           }
           $this->routes[$route->method][$route->path] = [
-            $className,
+            $controller,
             $methodName,
             $dependenciesNeeded
           ];
