@@ -51,6 +51,7 @@ final class UserRepository extends RepositoryBase {
       password: $entity->password,
       role: $entity->role,
       verified: $entity->verified,
+      deactivated: $entity->deactivated,
       createdAt: $entity->createdAt,
     );
   }

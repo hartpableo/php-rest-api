@@ -12,6 +12,7 @@ final readonly class UserEntity {
     public string $password,
     public UserRoleEnum $role,
     public bool $verified,
+    public bool $deactivated,
     public \DateTimeImmutable $createdAt,
   ) {}
 }

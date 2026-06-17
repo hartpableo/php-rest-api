@@ -63,6 +63,7 @@ final readonly class UserService {
         password: $password,
         role: $role,
         verified: $verified,
+        deactivated: FALSE,
         createdAt: new \DateTimeImmutable('now', new DateTimeZone('UTC')),
       )
     );

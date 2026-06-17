@@ -7,6 +7,9 @@ use App\Core\Database;
 if (php_sapi_name() !== 'cli') die();
 
 $query = <<<SQL
+-- Set timezone to UTC
+SET time_zone = '+00:00';
+
 -- Create user table
 CREATE TABLE IF NOT EXISTS `user` (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -15,6 +18,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `role` VARCHAR(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `verified` TINYINT(1) NOT NULL DEFAULT '0',
+  `deactivated` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `email` (`email`)
 );
@@ -35,7 +39,8 @@ CREATE TABLE IF NOT EXISTS `api_key` (
   `site_host` VARCHAR(120) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `key` (`key`),
-  INDEX `idx_user_id` (`user_id`)
+  INDEX `idx_user_id` (`user_id`),
+  CONSTRAINT `fk_content_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
 -- Create entity_base table
@@ -48,10 +53,11 @@ CREATE TABLE IF NOT EXISTS `content_type` (
   `slug` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `idx_user_label` (`user_id`, `label`),
-  UNIQUE KEY `idx_user_slug` (`user_id`, `slug`)
+  UNIQUE KEY `idx_user_slug` (`user_id`, `slug`),
+  CONSTRAINT `fk_content_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 
--- Create field_instance table
+-- Create field table
 CREATE TABLE IF NOT EXISTS `field` (
   `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT NOT NULL,
@@ -61,7 +67,21 @@ CREATE TABLE IF NOT EXISTS `field` (
   `slug` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   UNIQUE KEY `idx_type_content` (`type`, `content_type_id`),
   UNIQUE KEY `idx_user_slug` (`user_id`, `slug`),
-  INDEX `idx_user_label_content` (`user_id`, `label`, `content_type_id`)
+  INDEX `idx_user_label_content` (`user_id`, `label`, `content_type_id`),
+  CONSTRAINT `fk_content_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+);
+
+-- Create content table
+CREATE TABLE IF NOT EXISTS `content` (
+  `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `user_id` INT UNSIGNED NOT NULL,
+  `content_type_id` INT UNSIGNED NOT NULL,
+  `label` VARCHAR(255) NOT NULL,
+  `slug` VARCHAR(255) NOT NULL,
+  `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY `uk_user_slug` (`user_id`, `slug`),
+  CONSTRAINT `fk_content_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 );
 SQL;
 

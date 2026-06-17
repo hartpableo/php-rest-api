@@ -22,4 +22,28 @@ class RepositoryBase {
     ]);
     return $stmt->fetch();
   }
+
+  public function checkIfExists(array $args): bool {
+    $whereClauses = [];
+    $bindings = [];
+
+    foreach ($args as $property => $data) {
+      $column = preg_replace('/[^a-zA-Z0-9_]/', '', $property);
+
+      if (is_array($data)) {
+        $operator = in_array($data[1], ['=', '!=', '<', '>', '<=', '>=', 'LIKE']) ? $data[1] : '=';
+      } else {
+        $operator = '=';
+      }
+
+      $whereClauses[] = "{$column} {$operator} :{$column}";
+      $bindings[$column] = $data[0];
+    }
+
+    $sql = "SELECT 1 FROM {$this->table} WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1";
+
+    $stmt = $this->db->prepare($sql);
+    $stmt->execute($bindings);
+    return (bool)$stmt->fetchColumn();
+  }
 }
