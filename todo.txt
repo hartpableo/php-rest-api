@@ -4,4 +4,12 @@
 - ✅ field_data_[field_name] - auto create table in db - field_instance_id, user_id, value (JOIN)
 - ✅ field creation
 - test field creation flow
--
+- ✔ content creation
+- "get all" endpoints, paginated
+- "update" endpoints
+- "delete" endpoints
+- security: api bearer token
+- validate entities
+- middlewares
+- authentication
+- rate limiter
