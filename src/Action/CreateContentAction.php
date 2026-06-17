@@ -2,12 +2,14 @@
 
 namespace App\Action;
 
+use App\Attributes\Route;
 use App\Core\Request;
 use App\Domain\Content\ContentService;
 use App\Exception\BusinessRuleException;
 use App\Responder\CreateContentResponder;
 use App\Utility\JsonResponse;
 
+#[Route(path: '/api/content/create', method: 'POST')]
 final readonly class CreateContentAction {
   public function __construct(
     private ContentService $service,
