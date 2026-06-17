@@ -7,26 +7,6 @@ use App\Domain\RepositoryBase;
 final class ContentTypeRepository extends RepositoryBase {
   protected string $table = 'content_type';
 
-  public function checkIfExists(
-    int    $userId,
-    string $label,
-    string $slug
-  ): bool {
-    $stmt = $this->db->prepare("
-      SELECT 1 FROM {$this->table} 
-        WHERE user_id = :user_id 
-          AND (label = :label OR slug = :slug)
-        LIMIT 1
-    ");
-    $stmt->execute([
-      ':user_id' => $userId,
-      ':label' => $label,
-      ':slug' => $slug,
-    ]);
-
-    return $stmt->fetch() !== FALSE;
-  }
-
   public function insert(ContentTypeEntity $entity): ContentTypeEntity {
     $stmt = $this->db->prepare("
       INSERT INTO {$this->table} (user_id, label, slug, created_at)

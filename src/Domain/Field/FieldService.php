@@ -43,8 +43,12 @@ final readonly class FieldService {
 
     if (empty($label)) {
       $errors['label'] = 'Label is required';
-    } elseif ($this->fieldRepository->checkIfExists($userId, $label, $contentTypeId)) {
-      $errors['label'] = 'Label already exists';
+    } elseif ($this->fieldRepository->checkIfExists([
+      'label' => $label,
+      'user_id' => $userId,
+      'content_type_id' => $contentTypeId,
+    ])) {
+      $errors['label'] = 'Field already exists';
     }
 
     if (FieldTypeEnum::tryFrom($type->value) === NULL) {

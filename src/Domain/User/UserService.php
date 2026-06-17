@@ -47,8 +47,10 @@ final readonly class UserService {
       $errors['role'][] = 'Role is not valid';
     }
 
-    if ($this->repository->checkIfExists($email)) {
-      $errors['email'][] = 'Email already exists';
+    if ($this->repository->checkIfExists([
+      'email' => $email,
+    ])) {
+      $errors['email'][] = sprintf('User with email %s is already registered', $email);
     }
 
     if (!empty($errors)) {

@@ -8,27 +8,6 @@ use App\Exception\InternalServerErrorException;
 class FieldRepository extends RepositoryBase {
   protected string $table = 'field';
 
-  public function checkIfExists(
-    int    $userId,
-    string $label,
-    int    $contentTypeId,
-  ): bool {
-    $stmt = $this->db->prepare("
-      SELECT 1 FROM {$this->table} 
-        WHERE user_id = :user_id
-          AND label = :label
-          AND content_type_id = :content_type_id 
-      LIMIT 1
-    ");
-    $stmt->execute([
-      ':user_id' => $userId,
-      ':label' => $label,
-      ':content_type_id' => $contentTypeId,
-    ]);
-
-    return $stmt->fetch() !== FALSE;
-  }
-
   /**
    * @throws InternalServerErrorException
    */

@@ -35,7 +35,11 @@ final readonly class ContentTypeService {
 
     $slug = Slugify::slugify($label);
 
-    if ($this->repository->checkIfExists($userId, $label, $slug)) {
+    if ($this->repository->checkIfExists([
+      'label' => $label,
+      'slug' => $slug,
+      'user_id' => $userId,
+    ])) {
       $errors['general'][] = 'Content type already exists';
     }
 

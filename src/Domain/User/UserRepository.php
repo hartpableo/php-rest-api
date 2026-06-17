@@ -8,21 +8,6 @@ use App\Enum\UserRoleEnum;
 final class UserRepository extends RepositoryBase {
   protected string $table = 'user';
 
-  public function checkIfExists(
-    string $email,
-  ): bool {
-    $stmt = $this->db->prepare("
-      SELECT 1 FROM {$this->table} 
-        WHERE email = :email 
-      LIMIT 1
-    ");
-    $stmt->execute([
-      ':email' => $email,
-    ]);
-
-    return $stmt->fetch() !== FALSE;
-  }
-
   public function insert(UserEntity $entity): UserEntity {
     $stmt = $this->db->prepare("
       INSERT INTO {$this->table} (name, email, password, role, created_at)
