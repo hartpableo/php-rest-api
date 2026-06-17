@@ -32,12 +32,13 @@ class RepositoryBase {
 
       if (is_array($data)) {
         $operator = in_array($data[1], ['=', '!=', '<', '>', '<=', '>=', 'LIKE']) ? $data[1] : '=';
+        $bindings[$column] = $data[0];
       } else {
         $operator = '=';
+        $bindings[$column] = $data;
       }
 
       $whereClauses[] = "{$column} {$operator} :{$column}";
-      $bindings[$column] = $data[0];
     }
 
     $sql = "SELECT 1 FROM {$this->table} WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1";

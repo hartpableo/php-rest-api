@@ -47,6 +47,8 @@ final readonly class ContentService {
       $errors['slug'] = 'Slug already exists';
     }
 
+    // TODO: Validate existence of other entities involved (content type, user)
+
     if (!empty($errors)) {
       throw new BusinessRuleException($errors);
     }
