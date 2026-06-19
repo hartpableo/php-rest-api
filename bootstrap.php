@@ -14,7 +14,6 @@ define('APP_ROOT', realpath(__DIR__));
 
 // Request
 $request = new Request();
-$origin = $request->headers['Origin'] ?? NULL;
 
 // Container
 $container = new Container();
