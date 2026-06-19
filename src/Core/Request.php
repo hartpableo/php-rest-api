@@ -50,5 +50,4 @@ final class Request {
   public function input(string $key, $default = NULL) {
     return $this->body[$key] ?? $this->query[$key] ?? $default;
   }
-
 }

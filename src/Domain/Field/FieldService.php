@@ -17,6 +17,28 @@ final readonly class FieldService {
   ) {
   }
 
+  public function findAll(
+    int $userId,
+    array $args,
+    ?int $offset = NULL,
+    ?int $limit = NULL,
+  ): array {
+    // TODO: Validate user
+
+    $result = $this->fieldRepository->findAll($args, $offset, $limit);
+    return array_map(
+      fn($i) => new FieldEntity(
+        id: (int)$i->id,
+        userId: $i->userId,
+        type: FieldTypeEnum::tryFrom($i->type),
+        contentTypeId: (int)$i->contentTypeId,
+        label: $i->label,
+        slug: $i->slug,
+      ),
+      $result
+    );
+  }
+
   /**
    * @throws BusinessRuleException
    * @throws InternalServerErrorException
