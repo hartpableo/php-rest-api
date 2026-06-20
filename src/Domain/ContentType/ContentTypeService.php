@@ -13,6 +13,35 @@ final readonly class ContentTypeService {
   ) {
   }
 
+  public function findAll(
+    int   $userId,
+    array $args,
+    ?int  $offset = NULL,
+    ?int  $limit = NULL,
+  ): array {
+    // TODO: Validate user
+
+    $result = $this->repository->findAll(
+      array_merge($args, ['user_id' => $userId]),
+      $offset,
+      $limit
+    );
+
+    return array_merge([
+      'results' => array_map(
+        fn($i) => new ContentTypeEntity(
+          id: (int)$i['id'],
+          userId: $i['user_id'],
+          label: $i['label'],
+          slug: $i['slug'],
+          createdAt: new \DateTimeImmutable($i['created_at']),
+        ),
+        $result['data']
+      ),
+      'hasNextPage' => $result['hasNextPage'],
+    ]);
+  }
+
   /**
    * @throws BusinessRuleException
    * @throws DateMalformedStringExceptionAlias

@@ -32,7 +32,7 @@ final readonly class FieldService {
     );
 
     return array_merge([
-      'result' => array_map(
+      'results' => array_map(
         fn($i) => new FieldEntity(
           id: (int)$i['id'],
           userId: $i['user_id'],

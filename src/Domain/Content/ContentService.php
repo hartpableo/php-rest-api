@@ -4,12 +4,44 @@ namespace App\Domain\Content;
 
 use App\Exception\BusinessRuleException;
 use App\Utility\Slugify;
+use DateTimeImmutable;
 use DateTimeZone;
 
 final readonly class ContentService {
   public function __construct(
     private ContentRepository $repository,
   ) {
+  }
+
+  public function findAll(
+    int   $userId,
+    array $args,
+    ?int  $offset = NULL,
+    ?int  $limit = NULL,
+  ): array {
+    // TODO: Validate user
+
+    $result = $this->repository->findAll(
+      array_merge($args, ['user_id' => $userId]),
+      $offset,
+      $limit
+    );
+
+    return array_merge([
+      'results' => array_map(
+        fn($i) => new ContentEntity(
+          id: (int)$i['id'],
+          label: $i['label'],
+          slug: $i['slug'],
+          userId: (int)$i['user_id'],
+          contentTypeId: (int)$i['content_type_id'],
+          createdAt: new \DateTimeImmutable($i['created_at']),
+          updatedAt: new DateTimeImmutable($i['updated_at']),
+        ),
+        $result['data']
+      ),
+      'hasNextPage' => $result['hasNextPage'],
+    ]);
   }
 
   /**
@@ -25,7 +57,8 @@ final readonly class ContentService {
 
     if (empty($label)) {
       $errors['label'] = 'Label cannot be empty';
-    } elseif (strlen($label) < 3) {
+    }
+    elseif (strlen($label) < 3) {
       $errors['label'] = 'Label must be at least 3 characters';
     }
 

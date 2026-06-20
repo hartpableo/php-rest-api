@@ -4,14 +4,16 @@ namespace App\Action;
 
 use App\Attributes\Route;
 use App\Core\Request;
+use App\Domain\Content\ContentService;
+use App\Domain\ContentType\ContentTypeService;
 use App\Domain\Field\FieldService;
 use App\Responder\GetAllResponder;
 
-#[Route(path: '/api/fields', method: 'GET')]
-final readonly class GetAllFieldsAction {
+#[Route(path: '/api/content-types', method: 'GET')]
+final readonly class GetAllContentTypesAction {
   public function __construct(
-    private FieldService    $service,
-    private GetAllResponder $responder
+    private ContentTypeService $service,
+    private GetAllResponder    $responder
   ) {
   }
 
