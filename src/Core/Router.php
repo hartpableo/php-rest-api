@@ -14,7 +14,8 @@ final class Router {
 
   public function __construct(
     private readonly Container $container,
-    private readonly Request   $request
+    private readonly Request   $request,
+    private readonly Auth      $auth,
   ) {
   }
 
@@ -87,7 +88,10 @@ final class Router {
     string $method,
   ) {
     // Protect API endpoints
-    if (str_starts_with($path, '/api/') && !$this->guardApis($method)) {
+    if (
+      str_starts_with($path, '/api/')
+      && !$this->auth->isValidAPI($this->request)
+    ) {
       throw new UnauthorizedException("Not authorized");
     }
 

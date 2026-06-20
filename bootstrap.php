@@ -17,13 +17,14 @@ $request = new Request();
 
 // Container
 $container = new Container();
+$container->set(Container::class, $container);
 $container->set(Request::class, $request);
 
 // Router
-$router = new Router($container, $request);
 try {
+  $router = $container->get(Router::class);
   $router->register();
-} catch (ReflectionException $e) {
+} catch (\Throwable $e) {
   die($e->getMessage());
 }
 

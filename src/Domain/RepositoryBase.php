@@ -9,7 +9,7 @@ class RepositoryBase {
   protected string $table;
 
   public function __construct() {
-    $this->db = new Database()->getConnection();
+    $this->db = Database::getConnection();
   }
 
   public function findAll(
@@ -19,7 +19,7 @@ class RepositoryBase {
   ): array {
     [$whereClauses, $bindings] = $this->buildWhereClauses($args);
 
-    $query = "SELECT * FROM {$this->table}";
+    $query = "SELECT * FROM `{$this->table}`";
     if (!empty($whereClauses)) {
       $query .= " WHERE " . implode(' AND ', $whereClauses);
     }
@@ -54,8 +54,8 @@ class RepositoryBase {
 
   public function findBy($property, $value) {
     $stmt = $this->db->prepare("
-      SELECT {$property} FROM {$this->table}
-      WHERE {$property} = :value
+      SELECT `{$property}` FROM `{$this->table}`
+      WHERE `{$property}` = :value
     ");
     $stmt->execute([
       ':value' => $value,
@@ -66,7 +66,7 @@ class RepositoryBase {
   public function checkIfExists(array $args): bool {
     [$whereClauses, $bindings] = $this->buildWhereClauses($args);
     $stmt = $this->db->prepare("
-      SELECT 1 FROM {$this->table} 
+      SELECT 1 FROM `{$this->table}` 
       WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1
     ");
     $stmt->execute($bindings);
@@ -104,7 +104,7 @@ class RepositoryBase {
 
       // Handle the different operators
       if ($operator === 'IS NULL' || $operator === 'IS NOT NULL') {
-        $whereClauses[] = "{$column} {$operator}";
+        $whereClauses[] = "`{$column}` {$operator}";
       }
 
       elseif (($operator === 'IN' || $operator === 'NOT IN') && is_array($value)) {
@@ -115,7 +115,7 @@ class RepositoryBase {
           $bindings[$subKey] = $val;
         }
         $placeholdersStr = implode(', ', $inPlaceholders);
-        $whereClauses[] = "{$column} {$operator} ({$placeholdersStr})";
+        $whereClauses[] = "`{$column}` {$operator} ({$placeholdersStr})";
       }
 
       elseif ($operator === 'BETWEEN' && is_array($value) && count($value) >= 2) {
@@ -123,11 +123,11 @@ class RepositoryBase {
         $endKey = "{$paramKey}_end";
         $bindings[$startKey] = $value[0];
         $bindings[$endKey] = $value[1];
-        $whereClauses[] = "{$column} BETWEEN :{$startKey} AND :{$endKey}";
+        $whereClauses[] = "`{$column}` BETWEEN :{$startKey} AND :{$endKey}";
       }
 
       else {
-        $whereClauses[] = "{$column} {$operator} :{$paramKey}";
+        $whereClauses[] = "`{$column}` {$operator} :{$paramKey}";
         $bindings[$paramKey] = $value;
       }
     }

@@ -6,7 +6,7 @@ use App\Core\Database;
 
 if (php_sapi_name() !== 'cli') die();
 
-$db = new Database()->getConnection();
+$db = Database::getConnection();
 
 $password = password_hash('1234567', PASSWORD_DEFAULT);
 $db->exec("
@@ -15,6 +15,11 @@ INSERT INTO `user` (name, email, password)
 ");
 
 $user = $db->query("SELECT id, name FROM `user` WHERE name = 'Hart'")->fetch();
+
+$db->exec("
+INSERT INTO `api_key` (user_id, `key`, site_host)
+VALUES ('{$user['id']}', 'samplekey', 'hart.test');
+");
 
 $db->exec("
 INSERT INTO `content_type` (user_id, label, label_singular, label_plural, slug)

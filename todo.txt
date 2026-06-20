@@ -5,7 +5,7 @@
 - ✅ field creation
 - test field creation flow
 - ✅ content creation
-- "get all" endpoints, paginated
+- ✅ "get all" endpoints, paginated
 - "update" endpoints
 - "delete" endpoints
 - security: api bearer token

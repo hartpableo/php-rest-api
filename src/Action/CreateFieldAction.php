@@ -3,6 +3,7 @@
 namespace App\Action;
 
 use App\Attributes\Route;
+use App\Core\Auth;
 use App\Core\Request;
 use App\Domain\Field\FieldService;
 use App\Enum\FieldTypeEnum;
@@ -28,7 +29,7 @@ final readonly class CreateFieldAction {
   ): JsonResponse {
     try {
       $newEntity = $this->service->insert(
-        $request->input('userId'), // TODO: Validate using bearer token/api key
+        $request->input('userId'),
         $request->input('contentTypeId'),
         $request->input('label'),
         FieldTypeEnum::tryFrom($request->input('type')),
@@ -37,6 +38,6 @@ final readonly class CreateFieldAction {
       return new JsonResponse($e->getErrors(), 400);
     }
 
-    ($this->responder)($newEntity);
+    return ($this->responder)($newEntity);
   }
 }
