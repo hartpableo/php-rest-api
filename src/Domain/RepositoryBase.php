@@ -114,8 +114,6 @@ class RepositoryBase {
         $whereClauses[] = "{$column} {$operator} :{$paramKey}";
         $bindings[$paramKey] = $value;
       }
-
-      $whereClauses[] = "{$column} {$operator} :{$column}";
     }
 
     return [$whereClauses, $bindings];

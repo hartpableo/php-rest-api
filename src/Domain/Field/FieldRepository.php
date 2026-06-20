@@ -59,7 +59,7 @@ class FieldRepository extends RepositoryBase {
     int    $fieldId,
     int    $userId
   ): void {
-    $stmt = $this->db->exec("
+    $result = $this->db->exec("
       CREATE TABLE IF NOT EXISTS `field_data_{$slug}` (
         `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         `field_id` INT NOT NULL DEFAULT '{$fieldId}',
@@ -69,8 +69,13 @@ class FieldRepository extends RepositoryBase {
       );
     ");
 
-    if (empty($stmt)) {
-      throw new InternalServerErrorException('Error when saving the new field data table.');
+    if ($result === FALSE) {
+      $errorInfo = $this->db->errorInfo();
+      $errorMessage = $errorInfo[2] ?? 'Unknown database error';
+
+      throw new InternalServerErrorException(
+        "Error when saving the new field data table. SQL Error: {$errorMessage}"
+      );
     }
   }
 }

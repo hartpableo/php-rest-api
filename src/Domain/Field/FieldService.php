@@ -53,13 +53,17 @@ final readonly class FieldService {
 
     if (empty($userId)) {
       $errors['userId'] = 'User ID is required';
-    } elseif (!$this->userRepository->checkIfExists($userId)) {
+    } elseif (!$this->userRepository->checkIfExists([
+      'id' => $userId,
+    ])) {
       $errors['userId'] = 'User not found';
     }
 
     if (empty($contentTypeId)) {
       $errors['contentTypeId'] = 'Content Type ID is required';
-    } elseif (!empty($this->contentTypeRepository->findBy('id', $contentTypeId))) {
+    } elseif (!$this->contentTypeRepository->checkIfExists([
+      'id' => $contentTypeId,
+    ])) {
       $errors['contentTypeId'] = 'Content Type not found';
     }
 

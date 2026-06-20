@@ -5,6 +5,7 @@ namespace App\Action;
 use App\Attributes\Route;
 use App\Core\Request;
 use App\Domain\Field\FieldService;
+use App\Enum\FieldTypeEnum;
 use App\Exception\BusinessRuleException;
 use App\Exception\InternalServerErrorException;
 use App\Responder\CreateFieldResponder;
@@ -24,13 +25,17 @@ final readonly class CreateFieldAction {
    */
   public function __invoke(
     Request $request,
-  ): void {
-    $newEntity = $this->service->insert(
-      $request->input('userId'), // TODO: Validate using bearer token/api key
-      $request->input('contentTypeId'),
-      $request->input('label'),
-      $request->input('type')
-    );
+  ): JsonResponse {
+    try {
+      $newEntity = $this->service->insert(
+        $request->input('userId'), // TODO: Validate using bearer token/api key
+        $request->input('contentTypeId'),
+        $request->input('label'),
+        FieldTypeEnum::tryFrom($request->input('type')),
+      );
+    } catch (BusinessRuleException $e) {
+      return new JsonResponse($e->getErrors(), 400);
+    }
 
     ($this->responder)($newEntity);
   }
