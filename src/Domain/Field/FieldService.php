@@ -25,15 +25,19 @@ final readonly class FieldService {
   ): array {
     // TODO: Validate user
 
-    $result = $this->fieldRepository->findAll($args, $offset, $limit);
+    $result = $this->fieldRepository->findAll(
+      array_merge($args, ['user_id' => $userId]),
+      $offset,
+      $limit
+    );
     return array_map(
       fn($i) => new FieldEntity(
-        id: (int)$i->id,
-        userId: $i->userId,
-        type: FieldTypeEnum::tryFrom($i->type),
-        contentTypeId: (int)$i->contentTypeId,
-        label: $i->label,
-        slug: $i->slug,
+        id: (int)$i['id'],
+        userId: $i['user_id'],
+        type: FieldTypeEnum::tryFrom($i['type']),
+        contentTypeId: (int)$i['content_type_id'],
+        label: $i['label'],
+        slug: $i['slug'],
       ),
       $result
     );

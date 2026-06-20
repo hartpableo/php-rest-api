@@ -19,8 +19,8 @@ final readonly class GetAllFieldsAction {
     Request $request,
   ): void {
     $data = $this->service->findAll(
-      $request->query['userId'],
-      $request->query['args'],
+      $request->query['userId'] ?? NULL,
+      $request->query['args'] ?? [],
       $request->query['offset'] ?? NULL,
       $request->query['limit'] ?? NULL
     );
