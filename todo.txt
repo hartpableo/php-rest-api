@@ -9,7 +9,7 @@
 - "update" endpoints
 - "delete" endpoints
 - ✅ security: api bearer token
-- rego - maybe create an endpoint where users can register and get their api key (so a 2-step process)
+- rego - web UI
 - validate entities
 - middlewares
 - authentication
