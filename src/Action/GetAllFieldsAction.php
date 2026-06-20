@@ -22,7 +22,7 @@ final readonly class GetAllFieldsAction {
       $request->query['userId'] ?? NULL,
       $request->query['args'] ?? [],
       $request->query['offset'] ?? NULL,
-      $request->query['limit'] ?? NULL
+      $request->query['limit'] ?? 10
     );
     $message = !empty($data)
       ? 'Data fetched successfully'

@@ -18,10 +18,10 @@ final readonly class FieldService {
   }
 
   public function findAll(
-    int $userId,
+    int   $userId,
     array $args,
-    ?int $offset = NULL,
-    ?int $limit = NULL,
+    ?int  $offset = NULL,
+    ?int  $limit = NULL,
   ): array {
     // TODO: Validate user
 
@@ -30,17 +30,21 @@ final readonly class FieldService {
       $offset,
       $limit
     );
-    return array_map(
-      fn($i) => new FieldEntity(
-        id: (int)$i['id'],
-        userId: $i['user_id'],
-        type: FieldTypeEnum::tryFrom($i['type']),
-        contentTypeId: (int)$i['content_type_id'],
-        label: $i['label'],
-        slug: $i['slug'],
+
+    return array_merge([
+      'result' => array_map(
+        fn($i) => new FieldEntity(
+          id: (int)$i['id'],
+          userId: $i['user_id'],
+          type: FieldTypeEnum::tryFrom($i['type']),
+          contentTypeId: (int)$i['content_type_id'],
+          label: $i['label'],
+          slug: $i['slug'],
+        ),
+        $result['data']
       ),
-      $result
-    );
+      'hasNextPage' => $result['hasNextPage'],
+    ]);
   }
 
   /**
@@ -57,7 +61,8 @@ final readonly class FieldService {
 
     if (empty($userId)) {
       $errors['userId'] = 'User ID is required';
-    } elseif (!$this->userRepository->checkIfExists([
+    }
+    elseif (!$this->userRepository->checkIfExists([
       'id' => $userId,
     ])) {
       $errors['userId'] = 'User not found';
@@ -65,7 +70,8 @@ final readonly class FieldService {
 
     if (empty($contentTypeId)) {
       $errors['contentTypeId'] = 'Content Type ID is required';
-    } elseif (!$this->contentTypeRepository->checkIfExists([
+    }
+    elseif (!$this->contentTypeRepository->checkIfExists([
       'id' => $contentTypeId,
     ])) {
       $errors['contentTypeId'] = 'Content Type not found';
@@ -73,7 +79,8 @@ final readonly class FieldService {
 
     if (empty($label)) {
       $errors['label'] = 'Label is required';
-    } elseif ($this->fieldRepository->checkIfExists([
+    }
+    elseif ($this->fieldRepository->checkIfExists([
       'label' => $label,
       'user_id' => $userId,
       'content_type_id' => $contentTypeId,

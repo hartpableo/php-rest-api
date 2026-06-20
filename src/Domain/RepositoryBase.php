@@ -14,26 +14,42 @@ class RepositoryBase {
 
   public function findAll(
     array $args = [],
-    ?int  $offset = NULL,
-    ?int  $limit = NULL
+    ?int $offset = NULL,
+    ?int $limit = NULL
   ): array {
     [$whereClauses, $bindings] = $this->buildWhereClauses($args);
-    $stmt = $this->db->prepare("
-      SELECT * FROM {$this->table}
-      WHERE " . implode(' AND ', $whereClauses) . "
-    ");
 
+    $query = "SELECT * FROM {$this->table}";
+    if (!empty($whereClauses)) {
+      $query .= " WHERE " . implode(' AND ', $whereClauses);
+    }
+
+    // Request one extra row if a limit is set
+    if (isset($limit)) {
+      $searchLimit = $limit + 1;
+      $query .= " LIMIT {$searchLimit}";
+    }
 
     if (isset($offset)) {
-      $stmt .= " OFFSET {$offset}";
+      $query .= " OFFSET {$offset}";
     }
 
-    if (isset($limit)) {
-      $stmt .= " LIMIT {$limit}";
-    }
-
+    $stmt = $this->db->prepare($query);
     $stmt->execute($bindings);
-    return $stmt->fetchAll();
+    $results = $stmt->fetchAll();
+
+    // Check if the extra row exists
+    $hasNextPage = FALSE;
+    if (isset($limit) && count($results) > $limit) {
+      $hasNextPage = TRUE;
+      array_pop($results); // Remove the extra row
+    }
+
+    // Return both the data and the pagination status
+    return [
+      'data' => $results,
+      'hasNextPage' => $hasNextPage
+    ];
   }
 
   public function findBy($property, $value) {
