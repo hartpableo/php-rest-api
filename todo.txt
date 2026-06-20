@@ -8,7 +8,8 @@
 - ✅ "get all" endpoints, paginated
 - "update" endpoints
 - "delete" endpoints
-- security: api bearer token
+- ✅ security: api bearer token
+- rego - maybe create an endpoint where users can register and get their api key (so a 2-step process)
 - validate entities
 - middlewares
 - authentication
