@@ -2,7 +2,6 @@
 
 namespace App\Domain\FieldData;
 
-use AllowDynamicProperties;
 use App\Domain\RepositoryBase;
 
 final class FieldDataRepository extends RepositoryBase {
