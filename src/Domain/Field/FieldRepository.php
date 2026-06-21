@@ -64,7 +64,7 @@ class FieldRepository extends RepositoryBase {
         `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         `field_id` INT NOT NULL DEFAULT '{$fieldId}',
         `user_id` INT NOT NULL DEFAULT '{$userId}',
-        `value` VARCHAR(255) NOT NULL,
+        `value` VARCHAR(1024) NOT NULL,
         INDEX `idx_user_field` (`user_id`, `field_id`)
       );
     ");

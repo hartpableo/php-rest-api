@@ -107,4 +107,14 @@ final readonly class FieldService {
       )
     );
   }
+
+  public function findByFieldUser(
+    int $fieldId,
+    int $userId
+  ): bool {
+    return $this->fieldRepository->checkIfExists([
+      'id' => $fieldId,
+      'user_id' => $userId,
+    ]);
+  }
 }

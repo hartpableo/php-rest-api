@@ -47,7 +47,7 @@ final class Request {
     return is_array($jsonData) ? $jsonData : $_POST;
   }
 
-  public function input(string $key, $default = NULL) {
+  public function input(string $key, $default = NULL): mixed {
     return $this->body[$key] ?? $this->query[$key] ?? $default;
   }
 }
