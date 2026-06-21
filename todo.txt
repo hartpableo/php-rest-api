@@ -5,13 +5,13 @@
 - ✅ field creation
 - ✅ content creation
 - ✅ "get all" endpoints, paginated
-- "update" endpoints
-- "delete" endpoints
 - ✅ security: api bearer token
 - ✅ save field data
-- rego - web UI
 - ✅ validate entities
-- middlewares
+- ✅ middlewares
+- rego - web UI
 - authentication
-- test field creation flow
+- "update" endpoints
+- "delete" endpoints
 - rate limiter
+- test field creation flow
