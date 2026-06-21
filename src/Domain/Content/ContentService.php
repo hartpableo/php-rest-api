@@ -31,8 +31,6 @@ final readonly class ContentService {
     ?int  $offset = NULL,
     ?int  $limit = NULL,
   ): array {
-    // TODO: Validate user
-
     $result = $this->repository->findAll(
       array_merge($args, ['user_id' => $userId]),
       $offset,

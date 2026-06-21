@@ -129,25 +129,4 @@ final class Router {
     return $controllerInstance->$method(...$argsToPass);
   }
 
-  public function guardApis(string $method) {
-    // Handle preflight request
-    if ($method === 'OPTIONS') {
-      http_response_code(204);
-      header('Access-Control-Allow-Origin: *');
-      header('Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE, PATCH');
-      header('Access-Control-Allow-Headers: Origin, Content-Type, Accept, Authorization');
-      header('Access-Control-Max-Age: 7200');
-      exit;
-    }
-
-    // TODO: Store the allowed origins somewhere more dynamic/flexible soon
-    // TODO: Validate origin against API key (through the Bearer Token in $request)
-    $allowedOrigins = [
-      'http://hart.test'
-    ];
-
-    // Validate origin
-    return in_array(($this->request->headers['Origin'] ?? NULL), $allowedOrigins);
-  }
-
 }
