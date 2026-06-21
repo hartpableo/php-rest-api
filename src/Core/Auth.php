@@ -7,7 +7,8 @@ use App\Domain\ApiKey\ApiKeyService;
 final readonly class Auth {
   public function __construct(
     private ApiKeyService $apiKeyService,
-  ) {}
+  ) {
+  }
 
   public function isValidAPI(Request $request): bool {
     if (
@@ -19,9 +20,13 @@ final readonly class Auth {
     }
 
     $token = substr($request->headers['Authorization'], 7);
-    return $this->apiKeyService->checkApiUser(
-      $token,
-      $request->input('userId')
-    );
+    $userId = $this->apiKeyService->getUserIdByKey($token);
+
+    if ($userId === NULL) {
+      return FALSE;
+    }
+
+    $request->userId = $userId;
+    return TRUE;
   }
 }

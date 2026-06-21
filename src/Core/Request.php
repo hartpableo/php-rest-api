@@ -8,6 +8,7 @@ final class Request {
   public array $query;
   public array $body;
   public array $headers;
+  public ?int $userId = null;
 
   public function __construct() {
     $this->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
@@ -21,7 +22,11 @@ final class Request {
     $headers = [];
     foreach ($_SERVER as $key => $value) {
       if (str_starts_with($key, 'HTTP_')) {
-        $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+        $name = substr($key, 5)
+            |> (fn($x) => str_replace('_', ' ', $x))
+            |> strtolower(...)
+            |> ucwords(...)
+            |> (fn($x) => str_replace(' ', '-', $x));
         $headers[$name] = $value;
       }
     }

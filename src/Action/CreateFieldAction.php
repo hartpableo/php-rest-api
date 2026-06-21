@@ -29,7 +29,7 @@ final readonly class CreateFieldAction {
   ): JsonResponse {
     try {
       $newEntity = $this->service->insert(
-        $request->input('userId'),
+        $request->userId,
         $request->input('contentTypeId'),
         $request->input('label'),
         FieldTypeEnum::tryFrom($request->input('type')),

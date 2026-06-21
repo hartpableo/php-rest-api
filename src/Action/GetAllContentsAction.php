@@ -20,7 +20,7 @@ final readonly class GetAllContentsAction {
     Request $request,
   ): void {
     $data = $this->service->findAll(
-      $request->query['userId'] ?? NULL,
+      $request->userId,
       $request->query['args'] ?? [],
       $request->query['offset'] ?? NULL,
       $request->query['limit'] ?? 10

@@ -24,4 +24,9 @@ final readonly class ApiKeyService {
       'key' => $key,
     ]);
   }
+
+  public function getUserIdByKey(string $key): ?int {
+    $apiKey = $this->apiKeyRepository->findBy('key', $key);
+    return $apiKey ? (int)$apiKey['user_id'] : null;
+  }
 }

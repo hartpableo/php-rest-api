@@ -54,7 +54,7 @@ class RepositoryBase {
 
   public function findBy($property, $value) {
     $stmt = $this->db->prepare("
-      SELECT `{$property}` FROM `{$this->table}`
+      SELECT * FROM `{$this->table}`
       WHERE `{$property}` = :value
     ");
     $stmt->execute([

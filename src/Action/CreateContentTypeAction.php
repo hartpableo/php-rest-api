@@ -23,7 +23,7 @@ final readonly class CreateContentTypeAction {
     try {
       $newEntity = $this->service->insert(
         $request->input('label'),
-        (int)$request->input('userId'),
+        $request->userId,
       );
     } catch (BusinessRuleException|\DateMalformedStringException $e) {
       return new JsonResponse([

@@ -8,5 +8,6 @@ return [
   \App\Action\GetAllContentsAction::class,
   \App\Action\GetAllContentTypesAction::class,
   \App\Action\GetAllFieldsAction::class,
+  \App\Action\SaveFieldDataAction::class,
   \App\Action\TestAction::class,
 ];

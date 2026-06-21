@@ -71,6 +71,7 @@ final readonly class FieldService {
     }
     elseif (!$this->contentTypeRepository->checkIfExists([
       'id' => $contentTypeId,
+      'user_id' => $userId,
     ])) {
       $errors['contentTypeId'] = 'Content Type not found';
     }

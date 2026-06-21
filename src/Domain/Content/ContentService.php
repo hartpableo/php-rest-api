@@ -88,7 +88,7 @@ final readonly class ContentService {
 
     if ($this->repository->checkIfExists([
       'slug' => $slug,
-      'user_id' => $slug,
+      'user_id' => $userId,
       'content_type_id' => $contentTypeId,
     ])) {
       $errors['slug'] = 'Slug already exists';

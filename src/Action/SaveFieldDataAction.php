@@ -8,6 +8,9 @@ use App\Exception\BusinessRuleException;
 use App\Responder\SaveFieldDataResponder;
 use App\Utility\JsonResponse;
 
+use App\Attributes\Route;
+
+#[Route(path: '/api/fields/save-data', method: 'POST')]
 final readonly class SaveFieldDataAction {
   public function __construct(
     private FieldDataService       $service,
@@ -20,10 +23,10 @@ final readonly class SaveFieldDataAction {
   ) {
     try {
       $newEntity = $this->service->insert(
-        $request->input('fieldId'),
-        $request->input('userId'),
-        $request->input('contentTypeId'),
-        $request->input('contentId'),
+        $request->userId,
+        (int)$request->input('fieldId'),
+        (int)$request->input('contentTypeId'),
+        (int)$request->input('contentId'),
         $request->input('value'),
       );
     } catch (BusinessRuleException $e) {

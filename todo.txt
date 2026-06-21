@@ -10,7 +10,7 @@
 - ✅ security: api bearer token
 - ✅ save field data
 - rego - web UI
-- validate entities
+- ✅ validate entities
 - middlewares
 - authentication
 - test field creation flow
