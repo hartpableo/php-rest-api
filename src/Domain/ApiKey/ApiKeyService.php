@@ -2,16 +2,24 @@
 
 namespace App\Domain\ApiKey;
 
+use App\Domain\User\UserService;
+
 final readonly class ApiKeyService {
   public function __construct(
-    private ApiKeyRepository $repository,
-  ) {}
+    private ApiKeyRepository $apiKeyRepository,
+    private UserService      $userService,
+  ) {
+  }
 
   public function checkApiUser(
     string $key,
-    int $userId
+    int    $userId
   ): bool {
-    return $this->repository->checkIfExists([
+    if (!$this->userService->checkIfExists($userId)) {
+      return FALSE;
+    }
+
+    return $this->apiKeyRepository->checkIfExists([
       'user_id' => $userId,
       'key' => $key,
     ]);

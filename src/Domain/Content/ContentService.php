@@ -2,6 +2,8 @@
 
 namespace App\Domain\Content;
 
+use App\Domain\ContentType\ContentTypeService;
+use App\Domain\User\UserService;
 use App\Exception\BusinessRuleException;
 use App\Utility\Slugify;
 use DateTimeImmutable;
@@ -9,7 +11,9 @@ use DateTimeZone;
 
 final readonly class ContentService {
   public function __construct(
-    private ContentRepository $repository,
+    private ContentRepository  $repository,
+    private UserService        $userService,
+    private ContentTypeService $contentTypeService,
   ) {
   }
 
@@ -90,7 +94,13 @@ final readonly class ContentService {
       $errors['slug'] = 'Slug already exists';
     }
 
-    // TODO: Validate existence of other entities involved (content type, user)
+    if (!$this->userService->checkIfExists($userId)) {
+      $errors['user'] = 'User does not exist';
+    }
+
+    if (!$this->contentTypeService->checkIfExists($userId, $contentTypeId)) {
+      $errors['contentType'] = 'Content type does not exist';
+    }
 
     if (!empty($errors)) {
       throw new BusinessRuleException($errors);

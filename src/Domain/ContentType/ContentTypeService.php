@@ -13,14 +13,22 @@ final readonly class ContentTypeService {
   ) {
   }
 
+  public function checkIfExists(
+    int $userId,
+    int $contentTypeId
+  ): bool {
+    return $this->repository->checkIfExists([
+      'id' => $contentTypeId,
+      'user_id' => $userId,
+    ]);
+  }
+
   public function findAll(
     int   $userId,
     array $args,
     ?int  $offset = NULL,
     ?int  $limit = NULL,
   ): array {
-    // TODO: Validate user
-
     $result = $this->repository->findAll(
       array_merge($args, ['user_id' => $userId]),
       $offset,
@@ -59,8 +67,6 @@ final readonly class ContentTypeService {
     if (empty($userId)) {
       $errors['userId'][] = 'User cannot be empty';
     }
-
-    // TODO: Validate that the user exists
 
     $slug = Slugify::slugify($label);
 

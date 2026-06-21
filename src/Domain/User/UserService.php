@@ -12,6 +12,12 @@ final readonly class UserService {
   ) {
   }
 
+  public function checkIfExists(int $userId): bool {
+    return $this->repository->checkIfExists([
+      'id' => $userId,
+    ]);
+  }
+
   /**
    * @throws \DateMalformedStringException
    * @throws BusinessRuleException

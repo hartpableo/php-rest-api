@@ -23,8 +23,6 @@ final readonly class FieldService {
     ?int  $offset = NULL,
     ?int  $limit = NULL,
   ): array {
-    // TODO: Validate user
-
     $result = $this->fieldRepository->findAll(
       array_merge($args, ['user_id' => $userId]),
       $offset,
