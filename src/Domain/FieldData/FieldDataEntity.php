@@ -7,6 +7,8 @@ final readonly class FieldDataEntity {
     public ?int                  $id,
     public int                   $fieldId,
     public int                   $userId,
+    public int                   $contentTypeId,
+    public ?int                  $contentId,
     public string|int|bool|float $value,
   ) {
   }

@@ -22,6 +22,8 @@ final readonly class SaveFieldDataAction {
       $newEntity = $this->service->insert(
         $request->input('fieldId'),
         $request->input('userId'),
+        $request->input('contentTypeId'),
+        $request->input('contentId'),
         $request->input('value'),
       );
     } catch (BusinessRuleException $e) {

@@ -34,6 +34,8 @@ final class FieldDataRepository extends RepositoryBase {
       id: (int)$this->db->lastInsertId(),
       fieldId: $entity->fieldId,
       userId: $entity->userId,
+      contentTypeId: $entity->contentTypeId,
+      contentId: $entity->contentId,
       value: $entity->value
     );
   }

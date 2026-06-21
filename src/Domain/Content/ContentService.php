@@ -13,6 +13,18 @@ final readonly class ContentService {
   ) {
   }
 
+  public function checkIfExists(
+    int $contentId,
+    int $userId,
+    int $contentTypeId,
+  ): bool {
+    return $this->repository->checkIfExists([
+      'content_id' => $contentId,
+      'user_id' => $userId,
+      'content_type_id' => $contentTypeId,
+    ]);
+  }
+
   public function findAll(
     int   $userId,
     array $args,

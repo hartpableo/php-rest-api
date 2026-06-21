@@ -108,13 +108,15 @@ final readonly class FieldService {
     );
   }
 
-  public function findByFieldUser(
+  public function findByFieldUserContentType(
     int $fieldId,
-    int $userId
+    int $userId,
+    int $contentTypeId
   ): bool {
     return $this->fieldRepository->checkIfExists([
       'id' => $fieldId,
       'user_id' => $userId,
+      'content_type_id' => $contentTypeId,
     ]);
   }
 }

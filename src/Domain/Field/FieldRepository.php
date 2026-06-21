@@ -36,7 +36,12 @@ class FieldRepository extends RepositoryBase {
 
     // Create dedicated table for this field's data
     try {
-      $this->createFieldDataTable($entity->slug, $id, $entity->userId);
+      $this->createFieldDataTable(
+        $entity->slug,
+        $id,
+        $entity->userId,
+        $entity->contentTypeId
+      );
     } catch (InternalServerErrorException $e) {
       throw new InternalServerErrorException($e->getMessage());
     }
@@ -57,15 +62,18 @@ class FieldRepository extends RepositoryBase {
   private function createFieldDataTable(
     string $slug,
     int    $fieldId,
-    int    $userId
+    int    $userId,
+    int    $contentTypeId,
   ): void {
     $result = $this->db->exec("
       CREATE TABLE IF NOT EXISTS `field_data_{$slug}` (
         `id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
         `field_id` INT NOT NULL DEFAULT '{$fieldId}',
         `user_id` INT NOT NULL DEFAULT '{$userId}',
+        `content_type_id` INT NOT NULL DEFAULT '{$contentTypeId}',
+        `content_id` INT NOT NULL,
         `value` VARCHAR(1024) NOT NULL,
-        INDEX `idx_user_field` (`user_id`, `field_id`)
+        INDEX `idx_user_field_content_type` (`user_id`, `field_id`, `content_type_id`)
       );
     ");
 
