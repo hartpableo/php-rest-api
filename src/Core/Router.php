@@ -6,7 +6,6 @@ use App\Attributes\Route;
 use App\Exception\InternalServerErrorException;
 use App\Exception\NotFoundException;
 use App\Exception\UnauthorizedException;
-use Exception as ExceptionAlias;
 use ReflectionException as ReflectionExceptionAlias;
 
 final class Router {
@@ -43,11 +42,24 @@ final class Router {
               $dependenciesNeeded[] = $type->getName();
             }
           }
-          $this->routes[$route->method][$route->path] = [
-            $controller,
-            $methodName,
-            $dependenciesNeeded
-          ];
+
+          // Handle case where route attribute has multiple methods (array)
+          $routeMethod = $route->method;
+          if (is_array($routeMethod)) {
+            foreach ($routeMethod as $method) {
+              $this->routes[$method][$route->path] = [
+                $controller,
+                $methodName,
+                $dependenciesNeeded
+              ];
+            }
+          } else {
+            $this->routes[$routeMethod][$route->path] = [
+              $controller,
+              $methodName,
+              $dependenciesNeeded
+            ];
+          }
         }
       }
 

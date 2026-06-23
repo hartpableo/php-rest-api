@@ -8,8 +8,7 @@ use Attribute;
 final class Route {
   public function __construct(
     public string $path,
-    // TODO: Support array of multiple request methods
-    public string $method = 'GET',
+    public array|string $method = 'GET',
   ) {
   }
 }
