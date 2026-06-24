@@ -1,3 +1,8 @@
+<?php
+/**
+ * @var $csrfToken
+ */
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -34,7 +39,8 @@
 </header>
 <main role="main">
   <div class="col form">
-    <form action="/user/auth" method="post">
+    <form method="post">
+      <input type="hidden" name="__csrf_token" value="<?php echo $csrfToken; ?>">
       <label>
         Username
         <input type="text" name="username" placeholder="e.g., johndoe123">
