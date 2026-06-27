@@ -4,11 +4,11 @@ namespace App\Responder;
 
 use App\Utility\Template;
 
-final class UserRegisterResponder {
+final class UserLoginResponder {
   public function __invoke(
     string $csrfToken,
   ): Template {
-    return new Template('register', [
+    return new Template('login', [
       'csrfToken' => $csrfToken
     ]);
   }

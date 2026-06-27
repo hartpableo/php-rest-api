@@ -52,14 +52,13 @@ class RepositoryBase {
     ];
   }
 
-  public function findBy($property, $value) {
+  public function findBy(array $args) {
+    [$whereClauses, $bindings] = $this->buildWhereClauses($args);
     $stmt = $this->db->prepare("
       SELECT * FROM `{$this->table}`
-      WHERE `{$property}` = :value
+      WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1
     ");
-    $stmt->execute([
-      ':value' => $value,
-    ]);
+    $stmt->execute($bindings);
     return $stmt->fetch();
   }
 

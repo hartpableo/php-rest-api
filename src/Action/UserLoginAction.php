@@ -8,14 +8,14 @@ use App\Core\Request;
 use App\Domain\User\UserService;
 use App\Exception\BusinessRuleException;
 use App\Exception\UnauthorizedException;
-use App\Responder\UserRegisterResponder;
+use App\Responder\UserLoginResponder;
 use App\Utility\Redirect;
 
-#[Route(path: '/register', method: ['GET', 'POST'])]
+#[Route(path: '/login', method: ['GET', 'POST'])]
 final readonly class UserLoginAction {
   public function __construct(
     private UserService $service,
-    private UserRegisterResponder $responder,
+    private UserLoginResponder $responder,
     private CsrfToken $csrfToken,
   ) {
   }
@@ -30,12 +30,14 @@ final readonly class UserLoginAction {
       }
 
       try {
-        $this->service->insert(
+        $user = $this->service->authenticate(
           $request->input('email'),
           $request->input('password')
         );
 
-        return new Redirect('/login');
+        // TODO: Flash message
+
+        return new Redirect('/dashboard');
       } catch (BusinessRuleException|\DateMalformedStringException $e) {
         // TODO: Handle errors
       }

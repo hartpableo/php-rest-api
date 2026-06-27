@@ -9,7 +9,7 @@ use App\Domain\ApiKey\ApiKeyService;
 use App\Exception\UnauthorizedException;
 use App\Responder\ViewDashboardResponder;
 
-#[Route(path: '/', method: ['GET', 'POST'])]
+#[Route(path: '/dashboard', method: ['GET', 'POST'])]
 final readonly class ViewDashboardAction {
   public function __construct(
     private ApiKeyService          $service,

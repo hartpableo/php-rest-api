@@ -2,6 +2,8 @@
 
 global $request;
 
+use App\Core\Session;
+
 $menu = [
   [
     'label' => 'Login',
@@ -14,6 +16,7 @@ $menu = [
   [
     'label' => 'Logout',
     'path' => '/logout',
+    'auth' => TRUE,
   ]
 ];
 ?>
@@ -39,6 +42,12 @@ $menu = [
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <?php foreach ($menu as $item) :
+            if (
+              ($item['auth'] ?? FALSE) === TRUE
+              && !Session::isUserLoggedIn()
+            ) {
+              continue;
+            }
             $isActive = $item['path'] === $request->uri;
             ?>
             <li class="nav-item">

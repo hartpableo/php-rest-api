@@ -60,4 +60,42 @@ final readonly class UserService {
       )
     );
   }
+
+  /**
+   * @throws BusinessRuleException
+   */
+  public function authenticate(
+    string $email,
+    string $password,
+  ): UserEntity {
+    $entity = $this->repository->findBy([
+      'email' => $email,
+    ]);
+
+    if (empty($entity)) {
+      throw new BusinessRuleException([
+        'email' => 'User not found',
+      ]);
+    }
+
+    if (!password_verify($password, $entity['password'])) {
+      throw new BusinessRuleException([
+        'password' => 'Wrong email or password',
+      ]);
+    }
+
+    // Set user session
+    $_SESSION['user'] = [
+      'id' => $entity['id'],
+      'email' => $entity['email'],
+    ];
+
+    return new UserEntity(
+      id: $entity['id'],
+      email: $entity['email'],
+      password: $entity['password'],
+      verified: $entity['verified'],
+      createdAt: \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $entity['created_at']),
+    );
+  }
 }
