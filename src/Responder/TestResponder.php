@@ -4,7 +4,7 @@ namespace App\Responder;
 
 use App\Utility\JsonResponse;
 
-class TestResponder {
+final class TestResponder {
   public function __invoke(): JsonResponse {
     return new JsonResponse([
       'ok' => TRUE,

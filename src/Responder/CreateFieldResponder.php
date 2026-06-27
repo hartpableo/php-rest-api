@@ -5,7 +5,7 @@ namespace App\Responder;
 use App\Domain\Field\FieldEntity;
 use App\Utility\JsonResponse;
 
-class CreateFieldResponder {
+final class CreateFieldResponder {
   public function __invoke(FieldEntity $entity): JsonResponse {
     return new JsonResponse([
       'ok' => TRUE,

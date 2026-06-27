@@ -5,7 +5,7 @@ namespace App\Responder;
 use App\Domain\Content\ContentEntity;
 use App\Utility\JsonResponse;
 
-class CreateContentResponder {
+final class CreateContentResponder {
   public function __invoke(ContentEntity $entity): JsonResponse {
     return new JsonResponse([
       'ok' => TRUE,

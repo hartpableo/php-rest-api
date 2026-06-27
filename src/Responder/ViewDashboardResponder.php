@@ -4,7 +4,7 @@ namespace App\Responder;
 
 use App\Utility\Template;
 
-class ViewDashboardResponder {
+final class ViewDashboardResponder {
   public function __invoke(
     string $csrfToken,
     array  $keys = []

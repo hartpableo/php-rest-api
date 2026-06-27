@@ -5,7 +5,7 @@ namespace App\Responder;
 use App\Domain\FieldData\FieldDataEntity;
 use App\Utility\JsonResponse;
 
-class SaveFieldDataResponder {
+final class SaveFieldDataResponder {
   public function __invoke(FieldDataEntity $entity): JsonResponse {
     return new JsonResponse([
       'ok' => TRUE,
