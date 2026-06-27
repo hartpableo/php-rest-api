@@ -13,12 +13,9 @@ SET time_zone = '+00:00';
 -- Create user table
 CREATE TABLE IF NOT EXISTS `user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `name` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
-  `role` VARCHAR(12) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'user',
   `verified` TINYINT(1) NOT NULL DEFAULT '0',
-  `deactivated` TINYINT(1) NOT NULL DEFAULT '0',
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY `email` (`email`)
 );

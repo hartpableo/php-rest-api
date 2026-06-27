@@ -6,7 +6,6 @@ namespace App\Action;
 use App\Attributes\Route;
 use App\Core\Request;
 use App\Domain\User\UserService;
-use App\Enum\UserRoleEnum;
 use App\Exception\BusinessRuleException;
 use App\Responder\CreateUserResponder;
 use App\Utility\JsonResponse;
@@ -24,10 +23,8 @@ final readonly class CreateUserAction {
   ) {
     try {
       $newEntity = $this->service->insert(
-        $request->input('name'),
         $request->input('email'),
         $request->input('password'),
-        UserRoleEnum::tryFrom($request->input('role')),
         $request->input('verified', FALSE),
       );
     } catch (BusinessRuleException|\DateMalformedStringException $e) {

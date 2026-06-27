@@ -2,7 +2,6 @@
 
 namespace App\Domain\User;
 
-use App\Enum\UserRoleEnum;
 use App\Exception\BusinessRuleException;
 use DateTimeZone;
 
@@ -23,17 +22,11 @@ final readonly class UserService {
    * @throws BusinessRuleException
    */
   public function insert(
-    string       $name,
     string       $email,
     string       $password,
-    UserRoleEnum $role = UserRoleEnum::User,
     bool         $verified = FALSE,
   ): UserEntity {
     $errors = [];
-
-    if (empty($name)) {
-      $errors['name'][] = 'Name is required';
-    }
 
     if (empty($email)) {
       $errors['email'][] = 'Email is required';
@@ -45,12 +38,6 @@ final readonly class UserService {
       $errors['password'][] = 'Password is required';
     } elseif (strlen($password) < 7) {
       $errors['password'][] = 'Password must be at least 7 characters';
-    }
-
-    if (empty($role)) {
-      $errors['role'][] = 'Role is required';
-    } elseif (empty(UserRoleEnum::tryFrom($role->value))) {
-      $errors['role'][] = 'Role is not valid';
     }
 
     if ($this->repository->checkIfExists([
@@ -66,12 +53,9 @@ final readonly class UserService {
     return $this->repository->insert(
       new UserEntity(
         id: NULL,
-        name: $name,
         email: $email,
         password: $password,
-        role: $role,
         verified: $verified,
-        deactivated: FALSE,
         createdAt: new \DateTimeImmutable('now', new DateTimeZone('UTC')),
       )
     );
