@@ -3,7 +3,6 @@
 require_once __DIR__ . '/vendor/autoload.php';
 
 use App\Core\Container;
-use App\Core\CsrfToken;
 use App\Core\Request;
 use App\Core\Router;
 use App\Exception\InternalServerErrorException;

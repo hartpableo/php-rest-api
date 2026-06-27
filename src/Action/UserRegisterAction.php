@@ -5,16 +5,16 @@ namespace App\Action;
 use App\Attributes\Route;
 use App\Core\CsrfToken;
 use App\Core\Request;
-use App\Domain\ApiKey\ApiKeyService;
+use App\Domain\User\UserService;
 use App\Exception\UnauthorizedException;
-use App\Responder\ViewDashboardResponder;
+use App\Responder\UserRegisterResponder;
 
 #[Route(path: '/', method: ['GET', 'POST'])]
-final readonly class ViewDashboardAction {
+final readonly class UserRegisterAction {
   public function __construct(
-    private ApiKeyService          $service,
-    private ViewDashboardResponder $responder,
-    private CsrfToken              $csrfToken,
+    private UserSErvice $service,
+    private UserRegisterResponder $responder,
+    private CsrfToken $csrfToken,
   ) {
   }
 
@@ -27,9 +27,9 @@ final readonly class ViewDashboardAction {
         throw new UnauthorizedException();
       }
 
-      // TODO: Authenticate -> Replace form with "generate new api key" -> Shows keys in sidebar
-//      $keys = $this->service
-      echo 'hey';
+//      $insertNewUser = $this->service->insert(
+//
+//      );
     }
 
     // Handle GET
