@@ -10,8 +10,8 @@ $db = Database::getConnection();
 
 $password = password_hash('1234567', PASSWORD_DEFAULT);
 $db->exec("
-INSERT INTO `user` (name, email, password)
-  VALUES ('Hart', 'sample@gmail.com', '{$password}');
+INSERT INTO `user` (email, password)
+  VALUES ('sample@gmail.com', '{$password}');
 ");
 
 $user = $db->query("SELECT id, name FROM `user` WHERE name = 'Hart'")->fetch();

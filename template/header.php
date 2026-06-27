@@ -8,8 +8,8 @@ $menu = [
     'path' => '/login',
   ],
   [
-    'label' => 'Sign up',
-    'path' => '/signup',
+    'label' => 'Register',
+    'path' => '/register',
   ],
   [
     'label' => 'Logout',

@@ -2,7 +2,7 @@
 
 namespace App\Utility;
 
-class Slugify {
+final class Slugify {
   public static function slugify(string $text): string {
     // Replace non-letter or non-digit characters by a single hyphen
     $text = preg_replace('~[^\pL\d]+~u', '-', $text);

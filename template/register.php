@@ -9,8 +9,8 @@ require APP_ROOT . '/template/header.php';
   <form method="post">
     <input type="hidden" name="__csrf_token" value="<?php echo $csrfToken; ?>">
     <label>
-      Username
-      <input type="text" name="username" placeholder="e.g., johndoe123">
+      Email Address
+      <input type="email" name="email" placeholder="e.g., johndoe@domain.com">
     </label>
     <label>
       Password

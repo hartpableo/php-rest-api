@@ -6,10 +6,12 @@ use App\Attributes\Route;
 use App\Core\CsrfToken;
 use App\Core\Request;
 use App\Domain\User\UserService;
+use App\Exception\BusinessRuleException;
 use App\Exception\UnauthorizedException;
 use App\Responder\UserRegisterResponder;
+use App\Utility\Redirect;
 
-#[Route(path: '/', method: ['GET', 'POST'])]
+#[Route(path: '/register', method: ['GET', 'POST'])]
 final readonly class UserRegisterAction {
   public function __construct(
     private UserSErvice $service,
@@ -27,9 +29,16 @@ final readonly class UserRegisterAction {
         throw new UnauthorizedException();
       }
 
-//      $insertNewUser = $this->service->insert(
-//
-//      );
+      try {
+        $this->service->insert(
+          $request->input('email'),
+          $request->input('password')
+        );
+
+        return new Redirect('/login');
+      } catch (BusinessRuleException|\DateMalformedStringException $e) {
+        // TODO: Handle errors
+      }
     }
 
     // Handle GET

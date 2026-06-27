@@ -10,5 +10,6 @@ return [
   \App\Action\GetAllFieldsAction::class,
   \App\Action\SaveFieldDataAction::class,
   \App\Action\TestAction::class,
+  \App\Action\UserRegisterAction::class,
   \App\Action\ViewDashboardAction::class,
 ];
