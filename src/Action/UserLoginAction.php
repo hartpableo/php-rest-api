@@ -12,7 +12,7 @@ use App\Responder\UserRegisterResponder;
 use App\Utility\Redirect;
 
 #[Route(path: '/register', method: ['GET', 'POST'])]
-final readonly class UserRegisterAction {
+final readonly class UserLoginAction {
   public function __construct(
     private UserService $service,
     private UserRegisterResponder $responder,
