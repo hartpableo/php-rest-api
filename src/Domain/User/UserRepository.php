@@ -17,6 +17,7 @@ final class UserRepository extends RepositoryBase {
       $stmt->execute([
         ':email' => $entity->email,
         ':password' => password_hash($entity->password, PASSWORD_DEFAULT),
+        ':role' => $entity->role->value,
         ':created_at' => new \DateTimeImmutable()->format('Y-m-d H:i:s'),
       ]);
     } catch (\PDOException $e) {
@@ -30,6 +31,7 @@ final class UserRepository extends RepositoryBase {
       id: (int)$this->db->lastInsertId(),
       email: $entity->email,
       password: $entity->password,
+      role: $entity->role,
       verified: $entity->verified,
       createdAt: $entity->createdAt,
     );

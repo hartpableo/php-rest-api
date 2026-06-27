@@ -2,6 +2,7 @@
 
 namespace App\Domain\User;
 
+use App\Enum\UserRoleEnum;
 use App\Exception\BusinessRuleException;
 use DateTimeZone;
 
@@ -55,6 +56,7 @@ final readonly class UserService {
         id: NULL,
         email: $email,
         password: $password,
+        role: UserRoleEnum::from('website_user'),
         verified: $verified,
         createdAt: new \DateTimeImmutable('now', new DateTimeZone('UTC')),
       )
@@ -94,6 +96,7 @@ final readonly class UserService {
       id: $entity['id'],
       email: $entity['email'],
       password: $entity['password'],
+      role: UserRoleEnum::from($entity['role']),
       verified: $entity['verified'],
       createdAt: \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $entity['created_at']),
     );
