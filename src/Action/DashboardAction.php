@@ -10,7 +10,7 @@ use App\Exception\UnauthorizedException;
 use App\Responder\ViewDashboardResponder;
 
 #[Route(path: '/dashboard', method: ['GET', 'POST'])]
-final readonly class ViewDashboardAction {
+final readonly class DashboardAction {
   public function __construct(
     private ApiKeyService          $service,
     private ViewDashboardResponder $responder,
@@ -27,8 +27,6 @@ final readonly class ViewDashboardAction {
         throw new UnauthorizedException();
       }
 
-      // TODO: Authenticate -> Replace form with "generate new api key" -> Shows keys in sidebar
-//      $keys = $this->service
       echo 'hey';
     }
 

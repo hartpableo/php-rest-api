@@ -5,6 +5,7 @@ return [
   \App\Action\CreateContentTypeAction::class,
   \App\Action\CreateFieldAction::class,
   \App\Action\CreateUserAction::class,
+  \App\Action\DashboardAction::class,
   \App\Action\GetAllContentsAction::class,
   \App\Action\GetAllContentTypesAction::class,
   \App\Action\GetAllFieldsAction::class,
@@ -13,5 +14,4 @@ return [
   \App\Action\TestAction::class,
   \App\Action\UserLoginAction::class,
   \App\Action\UserRegisterAction::class,
-  \App\Action\ViewDashboardAction::class,
 ];

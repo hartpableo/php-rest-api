@@ -9,8 +9,8 @@ final class UserRepository extends RepositoryBase {
 
   public function insert(UserEntity $entity): UserEntity {
     $stmt = $this->db->prepare("
-      INSERT INTO {$this->table} (email, password, created_at)
-        VALUES (:email, :password, :created_at)
+      INSERT INTO {$this->table} (email, password, role, created_at)
+        VALUES (:email, :password, :role, :created_at)
     ");
 
     try {
