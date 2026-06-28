@@ -28,7 +28,7 @@ final readonly class DashboardAction {
 
   public function __invoke(
     Request $request,
-  ) {
+  ): void {
     // Handle POST
     if ($request->method === 'POST') {
       if (!$this->csrfToken->validate()) {

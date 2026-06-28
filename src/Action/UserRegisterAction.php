@@ -4,6 +4,7 @@ namespace App\Action;
 
 use App\Attributes\Route;
 use App\Core\CsrfToken;
+use App\Core\Middleware;
 use App\Core\Request;
 use App\Domain\User\UserService;
 use App\Exception\BusinessRuleException;
@@ -11,7 +12,13 @@ use App\Exception\UnauthorizedException;
 use App\Responder\UserRegisterResponder;
 use App\Utility\Redirect;
 
-#[Route(path: '/register', method: ['GET', 'POST'])]
+#[Route(
+  path: '/register',
+  method: ['GET', 'POST'],
+  middlewares: [
+    Middleware::IsAnonymous => ''
+  ]
+)]
 final readonly class UserRegisterAction {
   public function __construct(
     private UserService $service,
