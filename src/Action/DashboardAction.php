@@ -5,6 +5,7 @@ namespace App\Action;
 use App\Attributes\Route;
 use App\Core\CsrfToken;
 use App\Core\Request;
+use App\Core\Session;
 use App\Domain\ApiKey\ApiKeyService;
 use App\Exception\UnauthorizedException;
 use App\Responder\DashboardResponder;
@@ -20,17 +21,22 @@ final readonly class DashboardAction {
 
   public function __invoke(
     Request $request,
-  ) {
+  ): void {
     // Handle POST
     if ($request->method === 'POST') {
       if (!$this->csrfToken->validate()) {
         throw new UnauthorizedException();
       }
 
-      echo 'hey';
+      echo '<pre>';
+      print_r($request);
+      echo '</pre>';
+      exit;
     }
 
-    $apiKeys = $this->service->getKeysByUserId($request->userId);
+    $apiKeys = $this->service->getKeysByUserId(
+      Session::getCurrentUser()['id']
+    );
 
     // Handle GET
     ($this->responder)($this->csrfToken->get(), $apiKeys);

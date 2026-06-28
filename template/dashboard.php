@@ -2,6 +2,7 @@
 /**
  * @var $csrfToken
  * @var $apiKeys
+ * @var $user
  */
 require APP_ROOT . '/template/header.php';
 ?>
@@ -19,7 +20,7 @@ require APP_ROOT . '/template/header.php';
       </form>
     </div>
     <div class="col-21 col-md-6 result">
-      <?php if (!empty($apiKeys)) : ?>
+      <?php if (!empty($apiKeys['data'] ?? [])) : ?>
         <?php foreach ($apiKeys as $key) : ?>
           <div>
             <p><?php echo htmlspecialchars_decode($key['site_host']); ?></p>

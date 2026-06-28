@@ -7,6 +7,10 @@ final class Session {
     return !empty($_SESSION['user'] ?? NULL);
   }
 
+  public static function getCurrentUser(): ?array {
+    return self::isUserLoggedIn() ? (array)$_SESSION['user'] : NULL;
+  }
+
   public function logout(): void {
     if (session_status() !== PHP_SESSION_ACTIVE) {
       return;
