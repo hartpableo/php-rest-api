@@ -3,7 +3,6 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Core\Database;
-use App\Core\Session;
 
 if (php_sapi_name() !== 'cli') die();
 
@@ -86,7 +85,5 @@ SQL;
 
 $db = Database::getConnection();
 $db->exec($query);
-
-Session::logout();
 
 echo "✅ Migration finished.\n";

@@ -43,6 +43,8 @@ final class Router {
             }
           }
 
+          $middlewares = $route->middlewares;
+
           // Handle case where route attribute has multiple methods (array)
           $routeMethod = $route->method;
           if (is_array($routeMethod)) {
@@ -50,7 +52,8 @@ final class Router {
               $this->routes[$method][$route->path] = [
                 $controller,
                 $methodName,
-                $dependenciesNeeded
+                $dependenciesNeeded,
+                $middlewares
               ];
             }
           }
@@ -58,7 +61,8 @@ final class Router {
             $this->routes[$routeMethod][$route->path] = [
               $controller,
               $methodName,
-              $dependenciesNeeded
+              $dependenciesNeeded,
+              $middlewares
             ];
           }
         }
@@ -115,7 +119,14 @@ final class Router {
       throw new NotFoundException("Not found");
     }
 
-    [$class, $method, $dependenciesNeeded] = $action;
+    [$class, $method, $dependenciesNeeded, $middlewares] = $action;
+
+    // Execute middlewares
+    foreach ($middlewares as $key => $mwArgs) {
+      if (is_callable([new Middleware(), $key])) {
+        call_user_func_array([new Middleware(), $key], explode('|', $mwArgs));
+      }
+    }
 
     // Resolve dependencies out of the container at runtime
     $argsToPass = [];
