@@ -14,7 +14,7 @@ final class Router {
   public function __construct(
     private readonly Container $container,
     private readonly Request   $request,
-    private readonly Auth      $auth,
+    private readonly APIAuth   $apiAuth,
   ) {
   }
 
@@ -53,7 +53,8 @@ final class Router {
                 $dependenciesNeeded
               ];
             }
-          } else {
+          }
+          else {
             $this->routes[$routeMethod][$route->path] = [
               $controller,
               $methodName,
@@ -102,7 +103,7 @@ final class Router {
     // Protect API endpoints
     if (
       str_starts_with($path, '/api/')
-      && !$this->auth->isValidAPI($this->request)
+      && !$this->apiAuth->isValidAPI($this->request)
     ) {
       throw new UnauthorizedException("Not authorized");
     }

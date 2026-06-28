@@ -4,7 +4,7 @@ namespace App\Core;
 
 use App\Domain\ApiKey\ApiKeyService;
 
-final class Auth {
+final class APIAuth {
   private static string $authHeaderPrefix = 'Basic ';
 
   public function __construct(
