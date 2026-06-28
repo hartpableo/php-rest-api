@@ -30,7 +30,10 @@ final readonly class DashboardAction {
       echo 'hey';
     }
 
+    // TODO: Refactor Auth to cross-check the api token with the user id
+    $apiKeys = $this->service->getKeysByUserId($request->userId);
+
     // Handle GET
-    ($this->responder)($this->csrfToken->get());
+    ($this->responder)($this->csrfToken->get(), $apiKeys);
   }
 }
