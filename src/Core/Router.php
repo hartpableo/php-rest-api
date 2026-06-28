@@ -14,7 +14,7 @@ final class Router {
   public function __construct(
     private readonly Container $container,
     private readonly Request   $request,
-    private readonly APIAuth   $apiAuth,
+    private readonly ApiAuth   $apiAuth,
   ) {
   }
 

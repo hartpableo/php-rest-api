@@ -10,7 +10,7 @@ require APP_ROOT . '/template/header.php';
 <main role="main" class="container">
   <div class="row">
     <div class="col-21 col-md-6 form">
-      <form action="/api/create" method="post">
+      <form action="/apikey/create" method="post">
         <input type="hidden" name="__csrf_token" value="<?php echo $csrfToken; ?>">
         <label>
           Site Host

@@ -3,7 +3,6 @@
 namespace App\Action;
 
 use App\Attributes\Route;
-use App\Core\APIAuth;
 use App\Core\Request;
 use App\Domain\Field\FieldService;
 use App\Enum\FieldTypeEnum;
