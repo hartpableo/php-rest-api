@@ -101,4 +101,8 @@ final readonly class UserService {
       createdAt: \DateTimeImmutable::createFromFormat('Y-m-d H:i:s', $entity['created_at']),
     );
   }
+
+  public function findBy(array $args) {
+    return $this->repository->findBy($args);
+  }
 }

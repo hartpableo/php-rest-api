@@ -13,23 +13,30 @@ final readonly class ApiKeyService {
 
   public function checkApiUser(
     string $key,
-    int    $userId
-  ): bool {
-    if (!$this->userService->checkIfExists($userId)) {
-      return FALSE;
+    string $email
+  ): mixed {
+    $user = $this->userService->findBy([
+      'email' => $email,
+    ]);
+
+    if (empty($user)) {
+      return NULL;
     }
 
-    return $this->apiKeyRepository->checkIfExists([
-      'user_id' => $userId,
+    $exists = $this->apiKeyRepository->checkIfExists([
+      'user_id' => $user['id'],
       'key' => $key,
     ]);
+
+    if (empty($exists)) {
+      return NULL;
+    }
+
+    return $user;
   }
 
-  public function getUserIdByKey(string $key): ?int {
-    $apiKey = $this->apiKeyRepository->findBy([
-      'key' => $key,
-    ]);
-    return $apiKey ? (int)$apiKey['user_id'] : null;
+  public function findBy(array $args) {
+    return $this->apiKeyRepository->findBy($args);
   }
 
   public function getKeysByUserId(int $userId): array {

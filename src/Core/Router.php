@@ -107,8 +107,6 @@ final class Router {
       throw new UnauthorizedException("Not authorized");
     }
 
-//    error_log(print_r($this->routes, true), 3, APP_ROOT . '/logs/router.log');
-
     $routePath = parse_url($path, PHP_URL_PATH);
     $action = $this->routes[$method][$routePath] ?? NULL;
 

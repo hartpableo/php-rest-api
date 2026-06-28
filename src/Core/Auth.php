@@ -4,9 +4,11 @@ namespace App\Core;
 
 use App\Domain\ApiKey\ApiKeyService;
 
-final readonly class Auth {
+final class Auth {
+  private static string $authHeaderPrefix = 'Basic ';
+
   public function __construct(
-    private ApiKeyService $apiKeyService,
+    private readonly ApiKeyService $service,
   ) {
   }
 
@@ -14,19 +16,38 @@ final readonly class Auth {
     if (
       !isset($request->headers['Authorization'])
       || !is_string($request->headers['Authorization'])
-      || !str_starts_with($request->headers['Authorization'], 'Bearer ')
+      || !str_starts_with(
+        $request->headers['Authorization'],
+        self::$authHeaderPrefix
+      )
+      || !isset($request->headers['Origin'])
     ) {
       return FALSE;
     }
 
-    $token = substr($request->headers['Authorization'], 7);
-    $userId = $this->apiKeyService->getUserIdByKey($token);
+    $token = base64_decode(str_replace(
+      self::$authHeaderPrefix,
+      '',
+      $request->headers['Authorization']
+    ));
+    $token = explode(':', $token);
 
-    if ($userId === NULL) {
+    $user = $this->service->checkApiUser($token[1], $token[0]);
+
+    if (empty($user)) {
       return FALSE;
     }
 
-    $request->userId = $userId;
+    $apiKey = $this->service->findBy([
+      'key' => $token[1],
+      'user_id' => $user['id'],
+    ]);
+
+    if ($apiKey['siteHost'] !== parse_url($apiKey['siteHost'], PHP_URL_HOST)) {
+      return FALSE;
+    }
+
+    $request->userId = $user['id'];
     return TRUE;
   }
 }

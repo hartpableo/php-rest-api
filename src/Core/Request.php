@@ -8,7 +8,7 @@ final class Request {
   public array $query;
   public array $body;
   public array $headers;
-  public ?int $userId = null;
+  public ?int $userId = NULL;
 
   public function __construct() {
     $this->method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
