@@ -2,7 +2,12 @@
 
 namespace App\Domain\ApiKey;
 
+use App\Core\Session;
 use App\Domain\User\UserService;
+use DateTimeImmutable;
+use DateTimeZone;
+use http\Exception\InvalidArgumentException;
+use Random\RandomException;
 
 final readonly class ApiKeyService {
   public function __construct(
@@ -43,5 +48,36 @@ final readonly class ApiKeyService {
     return $this->apiKeyRepository->findAll([
       'user_id' => $userId,
     ]);
+  }
+
+  public function insert(
+    string $host,
+  ) {
+    if (!empty($this->apiKeyRepository->findBy([
+      'site_host' => $host,
+    ]))) {
+      throw new InvalidArgumentException('That host already exists.');
+    }
+
+    try {
+      $token = bin2hex(random_bytes(32));
+      while ($this->apiKeyRepository->checkIfExists([
+        'key' => $token,
+      ])) {
+        $token = bin2hex(random_bytes(32));
+      }
+
+      return $this->apiKeyRepository->insert(
+        new ApiKeyEntity(
+          id: NULL,
+          userId: Session::getCurrentUser()['id'],
+          apiToken: $token,
+          siteHost: $host,
+          createdAt: new DateTimeImmutable('now', new DateTimeZone('UTC')),
+        )
+      );
+    } catch (RandomException $e) {
+      // TODO: Improve exception
+    }
   }
 }

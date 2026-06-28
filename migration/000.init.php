@@ -3,6 +3,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Core\Database;
+use App\Core\Session;
 
 if (php_sapi_name() !== 'cli') die();
 
@@ -33,12 +34,12 @@ CREATE TABLE IF NOT EXISTS `verification` (
 CREATE TABLE IF NOT EXISTS `api_key` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `user_id` INT UNSIGNED NOT NULL,
-  `key` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
+  `api_token` VARCHAR(255) COLLATE utf8_unicode_ci NOT NULL,
   `site_host` VARCHAR(120) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  UNIQUE KEY `key` (`key`),
+  UNIQUE KEY `api_token` (`api_token`),
   INDEX `idx_user_id` (`user_id`),
-  CONSTRAINT `fk_api_key_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
+  CONSTRAINT `fk_api_api_token_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE
 );
 
 -- Create entity_base table
@@ -85,5 +86,7 @@ SQL;
 
 $db = Database::getConnection();
 $db->exec($query);
+
+Session::logout();
 
 echo "✅ Migration finished.\n";

@@ -9,6 +9,7 @@ use App\Core\Session;
 use App\Domain\ApiKey\ApiKeyService;
 use App\Exception\UnauthorizedException;
 use App\Responder\DashboardResponder;
+use App\Utility\Redirect;
 
 #[Route(path: '/dashboard', method: ['GET', 'POST'])]
 final readonly class DashboardAction {
@@ -21,7 +22,7 @@ final readonly class DashboardAction {
 
   public function __invoke(
     Request $request,
-  ): void {
+  ) {
     // Handle POST
     if ($request->method === 'POST') {
       if (!$this->csrfToken->validate()) {

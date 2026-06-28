@@ -1,6 +1,7 @@
 <?php
 
 return [
+  \App\Action\CreateApiKeyAction::class,
   \App\Action\CreateContentAction::class,
   \App\Action\CreateContentTypeAction::class,
   \App\Action\CreateFieldAction::class,

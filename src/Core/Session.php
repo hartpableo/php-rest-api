@@ -11,7 +11,7 @@ final class Session {
     return self::isUserLoggedIn() ? (array)$_SESSION['user'] : NULL;
   }
 
-  public function logout(): void {
+  public static function logout(): void {
     if (session_status() !== PHP_SESSION_ACTIVE) {
       return;
     }

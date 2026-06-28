@@ -9,6 +9,7 @@
     },
     "require": {
       "ext-pdo": "*",
-      "ext-intl": "*"
+      "ext-intl": "*",
+      "ext-http": "*"
     }
 }
