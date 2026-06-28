@@ -7,14 +7,14 @@ use App\Core\CsrfToken;
 use App\Core\Request;
 use App\Domain\ApiKey\ApiKeyService;
 use App\Exception\UnauthorizedException;
-use App\Responder\ViewDashboardResponder;
+use App\Responder\DashboardResponder;
 
 #[Route(path: '/dashboard', method: ['GET', 'POST'])]
 final readonly class DashboardAction {
   public function __construct(
-    private ApiKeyService          $service,
-    private ViewDashboardResponder $responder,
-    private CsrfToken              $csrfToken,
+    private ApiKeyService      $service,
+    private DashboardResponder $responder,
+    private CsrfToken          $csrfToken,
   ) {
   }
 
