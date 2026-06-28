@@ -21,10 +21,10 @@ require APP_ROOT . '/template/header.php';
     </div>
     <div class="col-21 col-md-6 result">
       <?php if (!empty($apiKeys['data'] ?? [])) : ?>
-        <?php foreach ($apiKeys as $key) : ?>
+        <?php foreach ($apiKeys['data'] as $key) : ?>
           <div>
             <p><?php echo htmlspecialchars_decode($key['site_host']); ?></p>
-            <p><?php echo htmlspecialchars_decode($key['key']); ?></p>
+            <p><?php echo htmlspecialchars_decode($key['api_token']); ?></p>
           </div>
         <?php endforeach; ?>
       <?php else : ?>

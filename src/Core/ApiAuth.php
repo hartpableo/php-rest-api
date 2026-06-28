@@ -39,7 +39,7 @@ final class ApiAuth {
     }
 
     $apiKey = $this->service->findBy([
-      'key' => $token[1],
+      'api_token' => $token[1],
       'user_id' => $user['id'],
     ]);
 

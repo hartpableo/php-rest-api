@@ -4,9 +4,9 @@ namespace App\Domain\ApiKey;
 
 use App\Core\Session;
 use App\Domain\User\UserService;
+use App\Exception\BusinessRuleException;
 use DateTimeImmutable;
 use DateTimeZone;
-use http\Exception\InvalidArgumentException;
 use Random\RandomException;
 
 final readonly class ApiKeyService {
@@ -30,7 +30,7 @@ final readonly class ApiKeyService {
 
     $exists = $this->apiKeyRepository->checkIfExists([
       'user_id' => $user['id'],
-      'key' => $key,
+      'api_token' => $key,
     ]);
 
     if (empty($exists)) {
@@ -50,19 +50,25 @@ final readonly class ApiKeyService {
     ]);
   }
 
+  /**
+   * @throws \DateMalformedStringException
+   * @throws BusinessRuleException
+   */
   public function insert(
     string $host,
   ) {
     if (!empty($this->apiKeyRepository->findBy([
       'site_host' => $host,
     ]))) {
-      throw new InvalidArgumentException('That host already exists.');
+      throw new BusinessRuleException([
+        'host' => 'That host already exists.'
+      ]);
     }
 
     try {
       $token = bin2hex(random_bytes(32));
       while ($this->apiKeyRepository->checkIfExists([
-        'key' => $token,
+        'api_token' => $token,
       ])) {
         $token = bin2hex(random_bytes(32));
       }
