@@ -14,5 +14,6 @@ return [
   \App\Action\SaveFieldDataAction::class,
   \App\Action\TestAction::class,
   \App\Action\UserLoginAction::class,
+  \App\Action\UserLogoutAction::class,
   \App\Action\UserRegisterAction::class,
 ];
