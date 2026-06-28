@@ -7,10 +7,11 @@ use App\Utility\Template;
 final class DashboardResponder {
   public function __invoke(
     string $csrfToken,
-    array  $keys = []
+    array  $apiKeys = []
   ): Template {
     return new Template('dashboard', [
-      'csrfToken' => $csrfToken
+      'csrfToken' => $csrfToken,
+      'apiKeys' => $apiKeys,
     ]);
   }
 }
