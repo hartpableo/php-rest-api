@@ -11,9 +11,9 @@
 - ✅ middlewares
 - ✅ rego - web UI
 - ✅ authentication
-- "update" endpoints
-- "delete" endpoints
+- ✅ "update" endpoints
+- ✅ "delete" endpoints
 - rate limiter
 
 TESTING
-- 
+-

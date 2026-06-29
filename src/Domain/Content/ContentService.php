@@ -126,4 +126,11 @@ final readonly class ContentService {
   ): ?ContentEntity {
     return $this->repository->update($args, $conditions);
   }
+
+  public function delete(
+    array $conditions,
+    ?int $limit = NULL
+  ): bool {
+    return $this->repository->delete($conditions, $limit);
+  }
 }

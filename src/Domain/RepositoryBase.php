@@ -62,8 +62,26 @@ class RepositoryBase {
     return $stmt->fetch();
   }
 
-  public function checkIfExists(array $args): bool {
-    [$whereClauses, $whereBindings] = $this->buildWhereClauses($args);
+  public function delete(
+    array $conditions,
+    ?int $limit = NULL,
+  ): bool {
+    [$whereClauses, $whereBindings] = $this->buildWhereClauses($conditions);
+    $whereClauses = implode(' AND ', $whereClauses);
+    $stmt = $this->db->prepare("
+      DELETE FROM `{$this->table}`
+      WHERE {$whereClauses}
+    ");
+
+    if (!empty($limit)) {
+      $stmt .= " LIMIT {$limit}";
+    }
+
+    return $stmt->execute($whereBindings);
+  }
+
+  public function checkIfExists(array $conditions): bool {
+    [$whereClauses, $whereBindings] = $this->buildWhereClauses($conditions);
     $stmt = $this->db->prepare("
       SELECT 1 FROM `{$this->table}` 
       WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1
@@ -83,7 +101,7 @@ class RepositoryBase {
     return [$setClauses, $setBindings];
   }
 
-  protected function buildWhereClauses(array $args): array {
+  protected function buildWhereClauses(array $conditions): array {
     $whereClauses = [];
     $whereBindings = [];
     $paramCounter = 0;
@@ -93,7 +111,7 @@ class RepositoryBase {
       'NOT IN', 'BETWEEN', 'IS NULL', 'IS NOT NULL'
     ];
 
-    foreach ($args as $property => $data) {
+    foreach ($conditions as $property => $data) {
       $column = preg_replace('/[^a-zA-Z0-9_]/', '', $property);
 
       // Normalize inputs so everything acts like an array payload
