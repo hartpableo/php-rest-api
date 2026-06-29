@@ -13,7 +13,7 @@
 - ✅ authentication
 - ✅ "update" endpoints
 - ✅ "delete" endpoints
-- rate limiter
+- ✅ rate limiter
 
 TESTING
 -

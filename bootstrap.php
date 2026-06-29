@@ -85,6 +85,6 @@ $router->register();
 
 // Resolve route
 $response = $router->resolve($request->uri, $request->method);
-if ($response instanceof \App\Utility\JsonResponse) {
+if ($response instanceof JsonResponse) {
   $response->send();
 }
