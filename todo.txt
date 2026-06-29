@@ -1,7 +1,7 @@
 - ✅ user rego
 - ✅ field types (text, longtext, number, entity_reference) - enum
-- ✅ field instance - db.field_instance - user_id, field_type (enum), content_type_id, label (JOIN)
-- ✅ field_data_[field_name] - auto create table in db - field_instance_id, user_id, value (JOIN)
+- ✅ field instance - db.field_instance - user_id, field_type (enum), content_type_id, label
+- ✅ field_data_[field_name] - auto create table in db - field_instance_id, user_id, value
 - ✅ field creation
 - ✅ content creation
 - ✅ "get all" endpoints, paginated
@@ -9,9 +9,11 @@
 - ✅ save field data
 - ✅ validate entities
 - ✅ middlewares
-- rego - web UI
-- authentication
+- ✅ rego - web UI
+- ✅ authentication
 - "update" endpoints
 - "delete" endpoints
 - rate limiter
-- test field creation flow
+
+TESTING
+- 
