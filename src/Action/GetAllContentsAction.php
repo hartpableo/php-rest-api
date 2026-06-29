@@ -7,6 +7,7 @@ use App\Core\Request;
 use App\Domain\Content\ContentService;
 use App\Domain\Field\FieldService;
 use App\Responder\GetAllResponder;
+use App\Utility\JsonResponse;
 
 #[Route(path: '/api/contents', method: 'GET')]
 final readonly class GetAllContentsAction {
@@ -18,7 +19,7 @@ final readonly class GetAllContentsAction {
 
   public function __invoke(
     Request $request,
-  ): void {
+  ): JsonResponse {
     $data = $this->service->findAll(
       $request->userId,
       $request->query['args'] ?? [],
@@ -29,6 +30,6 @@ final readonly class GetAllContentsAction {
       ? 'Data fetched successfully'
       : 'Empty data result';
 
-    ($this->responder)($data, $message);
+    return ($this->responder)($data, $message);
   }
 }

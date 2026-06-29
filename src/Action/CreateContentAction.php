@@ -19,20 +19,13 @@ final readonly class CreateContentAction {
 
   public function __invoke(
     Request $request
-  ) {
-    try {
-      $newEntity = $this->service->insert(
-        $request->input('label'),
-        $request->userId,
-        $request->input('contentTypeId'),
-      );
-    } catch (BusinessRuleException|\DateMalformedStringException $e) {
-      return new JsonResponse([
-        'ok' => FALSE,
-        'errors' => $e->getMessage(),
-      ], 400);
-    }
+  ): JsonResponse {
+    $newEntity = $this->service->insert(
+      $request->input('label'),
+      $request->userId,
+      $request->input('contentTypeId'),
+    );
 
-    ($this->responder)($newEntity);
+    return ($this->responder)($newEntity);
   }
 }

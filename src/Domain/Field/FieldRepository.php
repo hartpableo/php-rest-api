@@ -35,16 +35,12 @@ class FieldRepository extends RepositoryBase {
     $id = (int)$this->db->lastInsertId();
 
     // Create dedicated table for this field's data
-    try {
-      $this->createFieldDataTable(
-        $entity->slug,
-        $id,
-        $entity->userId,
-        $entity->contentTypeId
-      );
-    } catch (InternalServerErrorException $e) {
-      throw new InternalServerErrorException($e->getMessage());
-    }
+    $this->createFieldDataTable(
+      $entity->slug,
+      $id,
+      $entity->userId,
+      $entity->contentTypeId
+    );
 
     return new FieldEntity(
       id: $id,

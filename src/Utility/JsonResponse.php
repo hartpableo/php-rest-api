@@ -4,23 +4,32 @@ namespace App\Utility;
 
 use JetBrains\PhpStorm\NoReturn;
 
-final class JsonResponse {
-  #[NoReturn]
+final readonly class JsonResponse {
   public function __construct(
-    array $data,
-    int $status = 200,
-    array $headers = []
+    private array $data,
+    private int   $status = 200,
+    private array $headers = []
   ) {
-    http_response_code($status);
-    header('Content-Type: application/json');
-    foreach ($headers as $header => $value) {
-      if ($header === 'Content-Type') {
-        continue;
-      }
+  }
 
-      header("{$header}: {$value}");
+  #[NoReturn]
+  public function send(): void {
+    if (!headers_sent()) {
+      http_response_code($this->status);
+      header('Content-Type: application/json');
+      foreach ($this->headers as $key => $value) {
+        header("{$key}: {$value}");
+      }
     }
-    echo json_encode($data);
+    echo json_encode($this->data);
     exit;
+  }
+
+  public function getData(): array {
+    return $this->data;
+  }
+
+  public function getStatus(): int {
+    return $this->status;
   }
 }

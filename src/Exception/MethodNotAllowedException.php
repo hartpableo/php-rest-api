@@ -2,24 +2,11 @@
 
 namespace App\Exception;
 
-class MethodNotAllowedException extends \Exception {
-  public function displayError($mode = 1) {
-    http_response_code(405);
-
-    switch ($mode) {
-      case 2:
-        header('Content-Type: application/json');
-        echo json_encode([
-          'ok' => FALSE,
-          'message' => $this->getMessage(),
-        ]);
-        break;
-
-      default:
-        echo $this->getMessage();
-        break;
-    }
-
-    exit;
+class MethodNotAllowedException extends HttpException {
+  public function __construct(
+    string      $message = "Method Not Allowed.",
+    ?\Throwable $previous = NULL
+  ) {
+    parent::__construct($message, 405, $previous);
   }
 }

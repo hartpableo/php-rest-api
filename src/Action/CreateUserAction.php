@@ -20,20 +20,13 @@ final readonly class CreateUserAction {
 
   public function __invoke(
     Request $request,
-  ) {
-    try {
-      $newEntity = $this->service->insert(
-        $request->input('email'),
-        $request->input('password'),
-        $request->input('verified', FALSE),
-      );
-    } catch (BusinessRuleException|\DateMalformedStringException $e) {
-      return new JsonResponse([
-        'ok' => FALSE,
-        'errors' => $e->getErrors()
-      ], 400);
-    }
+  ): JsonResponse {
+    $newEntity = $this->service->insert(
+      $request->input('email'),
+      $request->input('password'),
+      $request->input('verified', FALSE),
+    );
 
-    ($this->responder)($newEntity);
+    return ($this->responder)($newEntity);
   }
 }

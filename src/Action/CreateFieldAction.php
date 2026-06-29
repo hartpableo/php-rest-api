@@ -26,16 +26,12 @@ final readonly class CreateFieldAction {
   public function __invoke(
     Request $request,
   ): JsonResponse {
-    try {
-      $newEntity = $this->service->insert(
-        $request->userId,
-        $request->input('contentTypeId'),
-        $request->input('label'),
-        FieldTypeEnum::tryFrom($request->input('type')),
-      );
-    } catch (BusinessRuleException $e) {
-      return new JsonResponse($e->getErrors(), 400);
-    }
+    $newEntity = $this->service->insert(
+      $request->userId,
+      $request->input('contentTypeId'),
+      $request->input('label'),
+      FieldTypeEnum::tryFrom($request->input('type')),
+    );
 
     return ($this->responder)($newEntity);
   }

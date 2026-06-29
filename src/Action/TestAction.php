@@ -4,6 +4,7 @@ namespace App\Action;
 
 use App\Attributes\Route;
 use App\Responder\TestResponder;
+use App\Utility\JsonResponse;
 
 #[Route(path: '/api/test')]
 final readonly class TestAction {
@@ -11,7 +12,7 @@ final readonly class TestAction {
     private TestResponder $responder
   ) {}
 
-  public function __invoke() {
-    ($this->responder)();
+  public function __invoke(): JsonResponse {
+    return ($this->responder)();
   }
 }

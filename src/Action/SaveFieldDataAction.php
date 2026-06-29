@@ -20,22 +20,15 @@ final readonly class SaveFieldDataAction {
 
   public function __invoke(
     Request $request,
-  ) {
-    try {
-      $newEntity = $this->service->insert(
-        $request->userId,
-        (int)$request->input('fieldId'),
-        (int)$request->input('contentTypeId'),
-        (int)$request->input('contentId'),
-        $request->input('value'),
-      );
-    } catch (BusinessRuleException $e) {
-      return new JsonResponse([
-        'ok' => FALSE,
-        'errors' => $e->getErrors()
-      ], 400);
-    }
+  ): JsonResponse {
+    $newEntity = $this->service->insert(
+      $request->userId,
+      (int)$request->input('fieldId'),
+      (int)$request->input('contentTypeId'),
+      (int)$request->input('contentId'),
+      $request->input('value'),
+    );
 
-    ($this->responder)($newEntity);
+    return ($this->responder)($newEntity);
   }
 }

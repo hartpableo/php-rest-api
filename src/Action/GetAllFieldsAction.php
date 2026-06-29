@@ -6,6 +6,7 @@ use App\Attributes\Route;
 use App\Core\Request;
 use App\Domain\Field\FieldService;
 use App\Responder\GetAllResponder;
+use App\Utility\JsonResponse;
 
 #[Route(path: '/api/fields', method: 'GET')]
 final readonly class GetAllFieldsAction {
@@ -17,7 +18,7 @@ final readonly class GetAllFieldsAction {
 
   public function __invoke(
     Request $request,
-  ): void {
+  ): JsonResponse {
     $data = $this->service->findAll(
       $request->userId,
       $request->query['args'] ?? [],
@@ -28,6 +29,6 @@ final readonly class GetAllFieldsAction {
       ? 'Data fetched successfully'
       : 'Empty data result';
 
-    ($this->responder)($data, $message);
+    return ($this->responder)($data, $message);
   }
 }
