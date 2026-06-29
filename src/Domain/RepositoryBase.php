@@ -14,10 +14,10 @@ class RepositoryBase {
 
   public function findAll(
     array $args = [],
-    ?int $offset = NULL,
-    ?int $limit = NULL
+    ?int  $offset = NULL,
+    ?int  $limit = NULL
   ): array {
-    [$whereClauses, $bindings] = $this->buildWhereClauses($args);
+    [$whereClauses, $whereBindings] = $this->buildWhereClauses($args);
 
     $query = "SELECT * FROM `{$this->table}`";
     if (!empty($whereClauses)) {
@@ -35,7 +35,7 @@ class RepositoryBase {
     }
 
     $stmt = $this->db->prepare($query);
-    $stmt->execute($bindings);
+    $stmt->execute($whereBindings);
     $results = $stmt->fetchAll();
 
     // Check if the extra row exists
@@ -53,28 +53,39 @@ class RepositoryBase {
   }
 
   public function findBy(array $args) {
-    [$whereClauses, $bindings] = $this->buildWhereClauses($args);
+    [$whereClauses, $whereBindings] = $this->buildWhereClauses($args);
     $stmt = $this->db->prepare("
       SELECT * FROM `{$this->table}`
       WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1
     ");
-    $stmt->execute($bindings);
+    $stmt->execute($whereBindings);
     return $stmt->fetch();
   }
 
   public function checkIfExists(array $args): bool {
-    [$whereClauses, $bindings] = $this->buildWhereClauses($args);
+    [$whereClauses, $whereBindings] = $this->buildWhereClauses($args);
     $stmt = $this->db->prepare("
       SELECT 1 FROM `{$this->table}` 
       WHERE " . implode(' AND ', $whereClauses) . " LIMIT 1
     ");
-    $stmt->execute($bindings);
+    $stmt->execute($whereBindings);
     return (bool)$stmt->fetchColumn();
   }
 
-  private function buildWhereClauses(array $args): array {
+  protected function buildSetClauses(array $args): array {
+    $setClauses = [];
+    $setBindings = [];
+    foreach ($args as $arg => $val) {
+      $setClauses[] = "{$arg} = :{$arg}";
+      $setBindings[":{$arg}"] = $val;
+    }
+
+    return [$setClauses, $setBindings];
+  }
+
+  protected function buildWhereClauses(array $args): array {
     $whereClauses = [];
-    $bindings = [];
+    $whereBindings = [];
     $paramCounter = 0;
     $allowedOperators = [
       '=', '!=', '<', '>', '<=', '>=',
@@ -111,7 +122,7 @@ class RepositoryBase {
         foreach ($value as $index => $val) {
           $subKey = "{$paramKey}_{$index}";
           $inPlaceholders[] = ":{$subKey}";
-          $bindings[$subKey] = $val;
+          $whereBindings[$subKey] = $val;
         }
         $placeholdersStr = implode(', ', $inPlaceholders);
         $whereClauses[] = "`{$column}` {$operator} ({$placeholdersStr})";
@@ -120,17 +131,17 @@ class RepositoryBase {
       elseif ($operator === 'BETWEEN' && is_array($value) && count($value) >= 2) {
         $startKey = "{$paramKey}_start";
         $endKey = "{$paramKey}_end";
-        $bindings[$startKey] = $value[0];
-        $bindings[$endKey] = $value[1];
+        $whereBindings[$startKey] = $value[0];
+        $whereBindings[$endKey] = $value[1];
         $whereClauses[] = "`{$column}` BETWEEN :{$startKey} AND :{$endKey}";
       }
 
       else {
         $whereClauses[] = "`{$column}` {$operator} :{$paramKey}";
-        $bindings[$paramKey] = $value;
+        $whereBindings[$paramKey] = $value;
       }
     }
 
-    return [$whereClauses, $bindings];
+    return [$whereClauses, $whereBindings];
   }
 }

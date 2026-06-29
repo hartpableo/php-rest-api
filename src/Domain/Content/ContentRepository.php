@@ -31,4 +31,45 @@ final class ContentRepository extends RepositoryBase {
       updatedAt: $entity->updatedAt,
     );
   }
+
+  public function update(
+    array $args,
+    array $conditions,
+  ): ?ContentEntity {
+    if (empty($args) || empty($conditions)) {
+      return NULL;
+    }
+
+    [$setClausesArray, $setBindings] = $this->buildSetClauses($args);
+    $setClauses = implode(', ', $setClausesArray);
+
+    [$whereClausesArray, $whereBindings] = $this->buildWhereClauses($conditions);
+    $whereClauses = implode(' AND ', $whereClausesArray);
+
+    $stmt = $this->db->prepare("
+      UPDATE {$this->table}
+      SET {$setClauses}
+      WHERE {$whereClauses}
+    ");
+
+    $success = $stmt->execute(array_merge($setBindings, $whereBindings));
+    if (!$success) {
+      return NULL;
+    }
+
+    $row = $this->findBy($conditions);
+    if (!$row) {
+      return NULL;
+    }
+
+    return new ContentEntity(
+      id: (int)$row['id'],
+      label: $row['label'],
+      slug: $row['slug'],
+      userId: (int)$row['user_id'],
+      contentTypeId: (int)$row['content_type_id'],
+      createdAt: \DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $row['created_at']),
+      updatedAt: \DateTimeImmutable::createFromFormat("Y-m-d H:i:s", $row['updated_at']),
+    );
+  }
 }

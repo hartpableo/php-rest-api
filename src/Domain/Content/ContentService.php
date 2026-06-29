@@ -119,4 +119,11 @@ final readonly class ContentService {
       ),
     );
   }
+
+  public function update(
+    array $args,
+    array $conditions,
+  ): ?ContentEntity {
+    return $this->repository->update($args, $conditions);
+  }
 }
