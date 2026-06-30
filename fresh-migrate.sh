@@ -16,10 +16,6 @@ echo "⚙ Running system initialization..."
 ddev php migration/000.init.php
 echo ""
 
-#echo "⚙ Running content seeder..."
-#ddev php migration/001.seeder.php
-#echo ""
-
 echo "📊 Current Database State:"
 ddev mysql -e "SHOW TABLES;"
 echo ""
